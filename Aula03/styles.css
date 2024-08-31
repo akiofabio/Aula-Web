@@ -1,0 +1,15 @@
+
+.text-indented{
+    text-indent: 5%;
+}
+
+body{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5vh;
+}
+footer{
+    min-height: 5vh;
+    margin-top: auto;
+}

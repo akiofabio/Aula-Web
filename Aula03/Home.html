@@ -29,24 +29,98 @@
                 <div class="card-body">
                     <h6>Escolha o tipo de dado que será testado:</h6>
                     <form name="Ex01">
-                        <input type="checkbox" name="inp_string"/>
-                        <label>String</label>
-                        <input type="checkbox" name="inp_number"/>
-                        <label>number</label>
-                        
+                        <div class="form-check">
+                            <input type="radio" name="tipo_dado" value="string" checked/>
+                            <label>String: "Teste"</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" name="tipo_dado" value="number"/>
+                            <label>Number: 42</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" name="tipo_dado" value="boolean"/>
+                            <label>Boolean: true</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" name="tipo_dado" value="array"/>
+                            <label>Array: [1,2,3,4]</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" name="tipo_dado" value="object"/>
+                            <label>Object: {nome:"Fabio", sobrenome:"Akio", idade: 32}</label>
+                        </div>
+                        <button type="button" class="bg-success" onclick="verificarTipoDado()">Verificar tipo de dado</button>
                     </form>
+                    <h4 id="res_ex01"></h4>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>2 - Operadores e Condicionais</h5>
+                </div>
+                <div class="card-body">
+                    <h6>Digite a idade para ser verificada:</h6>
+                    <form name="Ex02">
+                        <div class="form-check">
+                            <label>Idade: </label>
+                            <input type="number" id="ex02_idade"/>
+                        </div>
+                        
+                        <button type="button" class="bg-success" onclick="verificarIdade()">Verificar idade</button>
+                    </form>
+                    <h4 id="res_ex02"></h4>
                 </div>
             </div>
         </div>
     </main>
     <script>
+        //-----------------------------------------------------------------------------------------
+        // Ex01
         function tipoDeDado(dado){
-            return typeof dado
+            return (typeof dado ==="object")? (Array.isArray(dado)? "array" : "object") : typeof dado
         }
-        function tipoDeDado(dado){
-            return typeof dado
+        function verificarTipoDado(){
+            let tipoDado =  document.querySelector('input[name=tipo_dado]:checked').value;
+            let res = document.getElementById("res_ex01")
+            let dado
+            switch(tipoDado) {
+                case "string": 
+                    dado = "Teste";
+                    break;
+                case "number": 
+                    dado = 42;
+                    break;
+                case "boolean": 
+                    dado = true;
+                    break;
+                case "array": 
+                    dado = [1,2,3,4];
+                    break;
+                case "object": 
+                    dado = {nome:"Fabio", sobrenome:"Akio", idade: 32};
+                    break;
+            }
+            console.log(tipoDeDado(dado))
+            res.textContent = tipoDeDado(dado)
         }
-    </script>
+        //-----------------------------------------------------------------------------------------
+        // Ex02
+        function maiorDeIdade(idade){
+            if(idade>18){
+                res = "Maior de idade"
+            }
+            else{
+                res = "Menor de idade"
+            }
+            return res
+        }
+        function verificarIdade(){
+            idade = document.getElementById("ex02_idade").value
+            res = document.getElementById("ex02_res")
+            res.textContent = maiorDeIdade(idade)
+
+        }
+    </script
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 <footer class="bg-light  fixed-bottom">
