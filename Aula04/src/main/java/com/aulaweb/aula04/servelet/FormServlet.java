@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import static java.lang.System.out;
 
 /**
  *
@@ -24,9 +25,9 @@ public class FormServlet extends HttpServlet {
             throws ServletException, IOException {
         String nome = request.getParameter("nome");
         String email = request.getParameter("email");
-        System.out.println("nome: " + nome);
-        System.out.println("email: " + email);
-        response.sendRedirect("index.jsp");
+        out.println("nome: " + nome);
+        out.println("email: " + email);
+        response.sendRedirect("response.jsp");
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

@@ -1,6 +1,6 @@
 <%-- 
-    Document   : index
-    Created on : 31 de ago. de 2024, 15:21:27
+    Document   : response
+    Created on : 31 de ago. de 2024, 16:47:03
     Author     : Akio
 --%>
 
@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Aula 04</title>
+        <title>Resposta</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link href="styles.css" rel="stylesheet">
     </head>
@@ -25,25 +25,7 @@
                 </div>
             </nav>
         </header>
-        <h1 class="m-5">Bem-vindo ao meu site!</h1>
-        <div class='card m-3'>
-            <div class='card-body'>
-                <form method="post" action="${pageContext.request.contextPath}/FormServlet">
-                    <div class="form-control" >
-                        <label>Nome:</label>
-                        <input type='text' name="nome"/>
-                    </div>
-                    <div class="form-control">
-                        <label>Email:</label>
-                        <input type='text' name="email"/>
-                    </div>
-                    <button type="submit">Salvar</button>
-                </form>
-            </div>
-            
-            
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <h1>Hello World!</h1>
     </body>
     <footer class="bg-light  fixed-bottom">
         <div class="row text-center">
@@ -55,4 +37,5 @@
             </div>
         </div>
     </footer>
+    
 </html>
