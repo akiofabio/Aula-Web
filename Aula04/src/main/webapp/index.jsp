@@ -19,14 +19,24 @@
                 <div class="container-fluid">
                     <ul class="navbar-nav justify-content-end">
                         <li>
-                            <a class="nav-link" href="../../index.html">Voltar</a>
+                            <a class="nav-link" href="https://akiofabio.github.io/Aula-Web/">Voltar</a>
                         </li>
                     </ul>
                 </div>
             </nav>
         </header>
-        <h1>Bem-vindo ao meu site!</h1>
-        
+        <h1 class="m-5">Bem-vindo ao meu site!</h1>
+        <div class=""></div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     </body>
+    <footer class="bg-light  fixed-bottom">
+        <div class="row text-center">
+            <div class="col">
+                <span>Email: fabio.ikenoue@fatec.sp.gov.br</span>
+            </div>
+            <div class="col">
+                <a class="nav-link" href="https://github.com/akiofabio">GitHub</a>
+            </div>
+        </div>
+    </footer>
 </html>
