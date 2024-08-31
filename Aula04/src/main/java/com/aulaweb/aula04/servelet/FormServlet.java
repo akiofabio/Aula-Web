@@ -27,7 +27,12 @@ public class FormServlet extends HttpServlet {
         String email = request.getParameter("email");
         out.println("nome: " + nome);
         out.println("email: " + email);
-        response.sendRedirect("response.jsp");
+        
+        response.setContentType("text/html");
+        PrintWriter outRes = response.getWriter();
+        outRes.println("Obrigado " + nome +" por enviar seu contato");
+        outRes.close();
+        //response.sendRedirect("response.jsp");
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
