@@ -172,21 +172,69 @@
             <div class="card m-3">
                 <div class="card-header">
                         <h5>Ex07 - Métodos de Array</h5>
-                    </div>
-                    <div class="card-body">
-                        <h6>Digite o array que deseja filtrar:</h6>
-                        <form name="Ex07">
-                            <div class="form-check">
-                                <label>Array: </label>
-                                <input type="text" id="array_ex07"/>
-                                <small>Escreva os elementos separados por vigula. Ex: 1,2,3,5</small>
-                            </div>
+                </div>
+                <div class="card-body">
+                    <h6>Digite o array que deseja filtrar:</h6>
+                    <form name="Ex07">
+                        <div class="form-check">
+                            <label>Array: </label>
+                            <input type="text" id="array_ex07"/>
+                            <small>Escreva os elementos separados por vigula. Ex: 1,2,3,5</small>
+                        </div>
+                        
+                        <button type="button" class="bg-success rounded" onclick="filtrarParesButton()">Filtrar Pares</button>
+                        <button type="button" class="bg-success rounded" onclick="filtrarInparesButton()">Filtrar Inpares</button>
+                    </form>
+                    <h4 id="res_ex07"></h4>
+                </div>
+            </div>
+            <div class="card m-3">
+                <div class="card-header">
+                    <h5>Ex08 - Manipulação de Objetos</h5>
+                </div>
+                <div class="card-body">
+                    <h6>Digite a proprieda que deseja adionar ao objeto: {"NomeTeste":"Valorteste"}</h6>
+                    <form name="Ex08">
+                        <div class="form-check">
+                            <label>Nome da propriedade: </label>
+                            <input type="text" id="nome_ex08"/>
+                        </div>
+                        <div class="form-check">
+                            <label>Valor da propriedade: </label>
+                            <input type="text" id="valor_ex08"/>
+                        </div>
+                        <button type="button" class="bg-success rounded" onclick="adicionarPropriedadeButton()">Adicionar Propriedade</button>
+                    </form>
+                    <h4 id="res_ex08"></h4>
+                </div>
+            </div>
+            <div class="card m-3">
+                <div class="card-header">
+                    <h5>Ex09 - Eventos e DOM</h5>
+                </div>
+                <div class="card-body">
+                    <h6>Clique no botão para alterar o texto:</h6>
+                    <form name="Ex09">
+                        <p id="texto_ex09" class="text-center form-control">Esse é um texto teste, para ser alterado</p>
+                        <div>
+                            <textarea class="form-control" id="texto_alt_ex09" placeholder="Digite o texto a ser editado"></textarea>
                             
-                            <button type="button" class="bg-success rounded" onclick="filtrarParesButton()">Filtrar Pares</button>
-                            <button type="button" class="bg-success rounded" onclick="filtrarImparesButton()">Filtrar Inpares</button>
-                        </form>
-                        <h4 id="res_ex07"></h4>
-                    </div>
+                        </div>
+                        <button type="button" class="bg-success rounded mt-2" onclick="alterarTextoButton()">Alterar Texto</button>
+                        <h4>Quantidade de Cliques</h4>
+                        <h4 id="clique_ex09">0</h4>
+                    </form>
+                </div>
+            </div>
+            <div class="card m-3">
+                <div class="card-header">
+                    <h5>Ex10 - Promises e Async/Await</h5>
+                </div>
+                <div class="card-body">
+                    <h6>Clique no botão para simular o Fetch:</h6>
+                    <form name="Ex09">
+                        <button type="button" class="bg-success rounded mt-2" onclick="simularFetch()">Alterar Texto</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -290,40 +338,29 @@
         }
         //-----------------------------------------------------------------------------------------
         // Ex06
-        function criarPessoa(nome,idade,cidade){
-            let pessoa = {
-                nome: nome,
-                idade: idade,
-                cidade: cidade,
-                descreverPessoa: function() {
-                    return "Essa pessoa se chama " + this.nome + ", tem " + this.idade + " anos de idade e mora na cidade " + this.cidade
-                },
-                atualizar: function(idade,cidade) {
-                    this.idade = idade
-                    this.cidade = cidade
-                    return pessoa
-                }
+        let pessoa = {
+            nome: "",
+            idade: "",
+            cidade: "",
+            descreverPessoa: function() {
+                return "Essa pessoa se chama " + this.nome + ", tem " + this.idade + " anos de idade e mora na cidade " + this.cidade
+            },
+            atualizar: function(idade,cidade) {
+                this.idade = idade
+                this.cidade = cidade
+                return pessoa
             }
-            return pessoa
-        }
+        } 
         function descreverPessoaButton(){
             let res = document.getElementById("res_ex06")
-            let pessoa = criarPessoa(
-                document.getElementById("nome_ex06").value,
-                document.getElementById("idade_ex06").value,
-                document.getElementById("cidade_ex06").value
-            )
+            pessoa.nome = document.getElementById("nome_ex06").value
+            pessoa.idade = document.getElementById("idade_ex06").value
+            pessoa.cidade = document.getElementById("cidade_ex06").value
             console.log(pessoa.descreverPessoa())
             res.textContent = pessoa.descreverPessoa()
         }
         function alterarPessoaButton(){
             let res = document.getElementById("res_alt_ex06")
-            let pessoa = criarPessoa(
-                document.getElementById("nome_ex06").value,
-                document.getElementById("idade_ex06").value,
-                document.getElementById("cidade_ex06").value
-            )
-           
             pessoa.atualizar(
                 document.getElementById("idade_alt_ex06").value,
                 document.getElementById("cidade_alt_ex06").value
@@ -336,14 +373,20 @@
         function filtrarPares(array){
             let arrayInpares = []
             array.forEach(element => {
-                console.log(element)
-                console.log("element%2 : " + element%2)
-                console.log("element%2==1 : " + (element%2)==1)
-                if(element%2===1){
-                    arrayInpares.concat(element)
+                if((element%2==1)){
+                    arrayInpares.push(element)
                 }
             })
             return arrayInpares
+        }
+        function filtrarImpares(array){
+            let arrayPares = []
+            array.forEach(element => {
+                if((element%2 != 1)){
+                    arrayPares.push(element)
+                }
+            })
+            return arrayPares
         }
         function filtrarParesButton(){
             let stringArray = document.getElementById("array_ex07").value
@@ -351,6 +394,63 @@
             let res = document.getElementById("res_ex07")
             console.log(filtrarPares(array))
             res.textContent = "R: " + filtrarPares(array)
+        }
+        function filtrarInparesButton(){
+            let stringArray = document.getElementById("array_ex07").value
+            let array = stringArray.split(",").map(function(item) {return parseInt(item, 10);})
+            let res = document.getElementById("res_ex07")
+            console.log(filtrarImpares(array))
+            res.textContent = "R: " + filtrarImpares(array)
+        }
+        //-----------------------------------------------------------------------------------------
+        // Ex08
+        let objeto = {"NomeTeste":"Valorteste"}
+        function adicionarPropriedade(objeto,nome,valor){
+            if(objeto[nome] === undefined){
+                objeto[nome] = valor
+                return objeto
+            }
+            else{
+                return null
+            }
+            
+        }
+        function adicionarPropriedadeButton(){
+            let nome = document.getElementById("nome_ex08").value
+            let valor = document.getElementById("valor_ex08").value
+            let res = document.getElementById("res_ex08")
+            
+            if((adicionarPropriedade(objeto,nome,valor)===null)){
+                res.innerHTML = "Propriedade já existente, digite outro nome" + '<br/>' + JSON.stringify(objeto)
+                console.log("Propriedade já existente, digite outro nome")
+            }
+            else{
+                res.innerHTML = JSON.stringify(objeto)
+                console.log(objeto)
+            }
+        }
+        //-----------------------------------------------------------------------------------------
+        // Ex09
+        let contClique = 0
+        function alterarTextoButton(){
+            let texto = document.getElementById("texto_ex09")
+            let textoAlt = document.getElementById("texto_alt_ex09").value
+            let clique = document.getElementById("clique_ex09")
+            contClique+=1
+            clique.textContent = contClique
+            texto.textContent = textoAlt
+        }
+        //-----------------------------------------------------------------------------------------
+        // Ex09
+        async function simularFetch(){
+            let promessa = new Promise((resolve) => { setTimeout(() => {resolve("Dados recebidos")},2000)});
+            try{
+                let mensagem = await promessa
+                alert(mensagem)
+                console.log(mensagem)
+            } catch (erro){
+                alert(erro)
+            }
         }
     </script
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
