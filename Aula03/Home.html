@@ -76,16 +76,97 @@
                     <h5>Ex03 - Laços de Repetição</h5>
                 </div>
                 <div class="card-body">
-                    <h6>Digite a idade para ser verificada:</h6>
-                    <form name="Ex02">
+                    <h6>Digite o numero de que deseja gerar a tabuada e o numero final da tabuada:</h6>
+                    <form name="Ex03">
                         <div class="form-check">
-                            <label>Idade: </label>
-                            <input type="number" id="ex02_idade"/>
+                            <label>Numero: </label>
+                            <input type="number" id="numero_ex03" value="1"/>
+                        </div>
+                        <div class="form-check">
+                            <label>Numero Final: </label>
+                            <input type="number" id="numero_final_ex03" value="10"/>
                         </div>
                         
-                        <button type="button" class="bg-success rounded" onclick="verificarIdade()">Verificar idade</button>
+                        <button type="button" class="bg-success rounded" onclick="gerarTabuada()">Gerar Tabuada</button>
                     </form>
                     <h4 id="res_ex03"></h4>
+                </div>
+            </div>
+            <div class="card m-3">
+                <div class="card-header">
+                    <h5>Ex04 - Funções e Parâmetros</h5>
+                </div>
+                <div class="card-body">
+                    <h6>Digite o array que deseja somar e um numero caso queira multiplicar por ele antes de somar:</h6>
+                    <form name="Ex04">
+                        <div class="form-check">
+                            <label>Numero multiplicador: </label>
+                            <input type="number" id="mult_ex04" />
+                        </div>
+                        <div class="form-check">
+                            <label>Array: </label>
+                            <input type="text" id="array_ex04"/>
+                            <small>Escreva os elementos separados por vigula. Ex: 1,2,3,5</small>
+                        </div>
+                        
+                        <button type="button" class="bg-success rounded" onclick="gerarArray()">Somar</button>
+                    </form>
+                    <h4 id="res_ex04"></h4>
+                </div>
+            </div>
+            <div class="card m-3">
+                <div class="card-header">
+                    <h5>Ex05 - Manipulação de Strings</h5>
+                </div>
+                <div class="card-body">
+                    <h6>Digite o texto para inverter:</h6>
+                    <form name="Ex05">
+                        <div class="form-check">
+                            <label>Texto: </label>
+                            <input type="text" id="texto_ex05"/>
+                        </div>
+                        <button type="button" class="bg-success rounded" onclick="reverterStringButton()">Inverter</button>
+                    </form>
+                    <h4 id="res_ex05"></h4>
+                </div>
+            </div>
+            <div class="card m-3">
+                <div class="card-header">
+                    <h5>Ex06 - Objetos e Arrays</h5>
+                </div>
+                <div class="card-body">
+                    <h6>Digite os dados da pessoa a ser descrita:</h6>
+                    <form name="Ex05">
+                        <div class="form-check">
+                            <label>Nome: </label>
+                            <input type="text" id="nome_ex06"/>
+                        </div>
+                        <div class="form-check">
+                            <label>Idade: </label>
+                            <input type="number" id="idade_ex06"/>
+                        </div>
+                        <div class="form-check">
+                            <label>Cidade: </label>
+                            <input type="text" id="cidade_ex06"/>
+                        </div>
+                        <button type="button" class="bg-success rounded" onclick="descreverPessoaButton()">Descrever</button>
+                        
+                    </form>
+                    <h4 id="res_ex06"></h4>
+                    <h6>Altere os dados da pessoa a ser descrita:</h6>
+                    <form>
+                        <div class="form-check">
+                            <label>Idade: </label>
+                            <input type="number" id="idade_alt_ex06"/>
+                        </div>
+                        <div class="form-check">
+                            <label>Cidade: </label>
+                            <input type="text" id="cidade_alt_ex06"/>
+                        </div>
+                        <button type="button" class="bg-success rounded" onclick="alterarPessoaButton()">Alterar</button>
+                    </form>
+                    <h4 id="res_alt_ex06"></h4>
+
                 </div>
             </div>
         </div>
@@ -140,6 +221,97 @@
         }
         //-----------------------------------------------------------------------------------------
         // Ex03
+        function tabuada(numero,numeroFinal){
+            let resTabuada = []
+            for(n=1; n<=numeroFinal; n++){
+                resTabuada[n-1] = ( numero + "x" + n + "=" + (n*numero))
+                console.log(numero + "x" + n + "=" + (n*numero))
+            }
+            return resTabuada
+        }
+        function gerarTabuada(){
+            let numero = document.getElementById("numero_ex03").value
+            let numeroFinal = document.getElementById("numero_final_ex03").value
+            let res = document.getElementById("res_ex03")
+            
+            res.innerHTML = tabuada(numero,numeroFinal).join('<br />')
+        }
+        //-----------------------------------------------------------------------------------------
+        // Ex04
+        function somaArray(array,multiplo){
+            let soma=0
+            array.forEach(element => {
+                console.log(typeof multiplo)
+                console.log( multiplo)
+                if(!Number.isNaN(multiplo)){
+                    element*=multiplo
+                }
+                soma+=element
+            });
+            console.log(soma)
+            return soma
+        }
+        function gerarArray(){
+            let mult = parseInt(document.getElementById("mult_ex04").value)
+            let stringArray = document.getElementById("array_ex04").value
+            let array = stringArray.split(",").map(function(item) {return parseInt(item, 10);})
+            let res = document.getElementById("res_ex04")
+            res.textContent = "R: " + somaArray(array,mult)
+        }
+        //-----------------------------------------------------------------------------------------
+        // Ex05
+        function reverterString(texto){
+            return texto.split("").reverse().join("")
+        }
+        function reverterStringButton(){
+            let texto = document.getElementById("texto_ex05").value
+            let res = document.getElementById("res_ex05")
+            res.textContent = "R: " + reverterString(texto)
+        }
+        //-----------------------------------------------------------------------------------------
+        // Ex06
+        function criarPessoa(nome,idade,cidade){
+            let pessoa = {
+                nome: nome,
+                idade: idade,
+                cidade: cidade,
+                descreverPessoa: function() {
+                    return "Essa pessoa se chama " + this.nome + ", tem " + this.idade + " anos de idade e mora na cidade " + this.cidade
+                },
+                atualizar: function(idade,cidade) {
+                    this.idade = idade
+                    this.cidade = cidade
+                    return pessoa
+                }
+            }
+            return pessoa
+        }
+        function descreverPessoaButton(){
+            let res = document.getElementById("res_ex06")
+            let pessoa = criarPessoa(
+                document.getElementById("nome_ex06").value,
+                document.getElementById("idade_ex06").value,
+                document.getElementById("cidade_ex06").value
+            )
+            console.log(pessoa.descreverPessoa())
+            res.textContent = pessoa.descreverPessoa()
+        }
+        function alterarPessoaButton(){
+            let res = document.getElementById("res_alt_ex06")
+            let pessoa = criarPessoa(
+                document.getElementById("nome_ex06").value,
+                document.getElementById("idade_ex06").value,
+                document.getElementById("cidade_ex06").value
+            )
+           
+            pessoa.atualizar(
+                document.getElementById("idade_alt_ex06").value,
+                document.getElementById("cidade_alt_ex06").value
+            )
+            console.log(pessoa.descreverPessoa())
+            res.textContent = pessoa.descreverPessoa()
+        }
+        
     </script
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
