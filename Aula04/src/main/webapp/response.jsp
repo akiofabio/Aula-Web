@@ -25,7 +25,10 @@
                 </div>
             </nav>
         </header>
-        <h1>Hello World!</h1>
+        <h1><%= request.getParameter("nome") %>, obrigado por enviar seu contato </h1>
+        <h2>e de novo </h2>
+        <h1> <%= request.getSession().getAttribute("nome") %>, obrigado por enviar seu contato </h1>
+        <a href="/Aula04/index.jsp">Voltar</a>
     </body>
     <footer class="bg-light  fixed-bottom">
         <div class="row text-center">

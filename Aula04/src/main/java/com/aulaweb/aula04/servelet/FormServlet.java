@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import static java.lang.System.out;
 
 /**
@@ -27,6 +28,11 @@ public class FormServlet extends HttpServlet {
         String email = request.getParameter("email");
         out.println("nome: " + nome);
         out.println("email: " + email);
+        
+        boolean create = true;         
+        HttpSession session = request.getSession(create);
+        session.setAttribute ("nome", nome);
+        
         
         response.sendRedirect("response.jsp?nome="+nome);
     }
