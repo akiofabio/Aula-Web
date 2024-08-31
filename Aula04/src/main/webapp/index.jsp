@@ -28,7 +28,7 @@
         <h1 class="m-5">Bem-vindo ao meu site!</h1>
         <div class='card m-3'>
             <div class='card-body'>
-                <form method="POSt" action="">
+                <form method="POSt" action="/FormServlet">
                     <div class="form-control" >
                         <label>Nome:</label>
                         <input type='text' name="nome"/>
