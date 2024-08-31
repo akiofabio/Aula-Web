@@ -28,15 +28,16 @@
         <h1 class="m-5">Bem-vindo ao meu site!</h1>
         <div class='card m-3'>
             <div class='card-body'>
-                <form>
-                    <div class="form-control">
+                <form method="POSt" action="">
+                    <div class="form-control" >
                         <label>Nome:</label>
-                        <input type='text'/>
+                        <input type='text' name="nome"/>
                     </div>
                     <div class="form-control">
                         <label>Email:</label>
-                        <input type='text'/>
+                        <input type='text' name="email"/>
                     </div>
+                    <button type="submit">Salvar</button>
                 </form>
             </div>
             
