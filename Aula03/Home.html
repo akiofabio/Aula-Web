@@ -169,6 +169,26 @@
 
                 </div>
             </div>
+            <div class="card m-3">
+                <div class="card-header">
+                        <h5>Ex07 - Métodos de Array</h5>
+                    </div>
+                    <div class="card-body">
+                        <h6>Digite o array que deseja filtrar:</h6>
+                        <form name="Ex07">
+                            <div class="form-check">
+                                <label>Array: </label>
+                                <input type="text" id="array_ex07"/>
+                                <small>Escreva os elementos separados por vigula. Ex: 1,2,3,5</small>
+                            </div>
+                            
+                            <button type="button" class="bg-success rounded" onclick="filtrarParesButton()">Filtrar Pares</button>
+                            <button type="button" class="bg-success rounded" onclick="filtrarImparesButton()">Filtrar Inpares</button>
+                        </form>
+                        <h4 id="res_ex07"></h4>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
     <script>
@@ -311,7 +331,27 @@
             console.log(pessoa.descreverPessoa())
             res.textContent = pessoa.descreverPessoa()
         }
-        
+        //-----------------------------------------------------------------------------------------
+        // Ex07
+        function filtrarPares(array){
+            let arrayInpares = []
+            array.forEach(element => {
+                console.log(element)
+                console.log("element%2 : " + element%2)
+                console.log("element%2==1 : " + (element%2)==1)
+                if(element%2===1){
+                    arrayInpares.concat(element)
+                }
+            })
+            return arrayInpares
+        }
+        function filtrarParesButton(){
+            let stringArray = document.getElementById("array_ex07").value
+            let array = stringArray.split(",").map(function(item) {return parseInt(item, 10);})
+            let res = document.getElementById("res_ex07")
+            console.log(filtrarPares(array))
+            res.textContent = "R: " + filtrarPares(array)
+        }
     </script
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
