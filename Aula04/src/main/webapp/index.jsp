@@ -26,7 +26,22 @@
             </nav>
         </header>
         <h1 class="m-5">Bem-vindo ao meu site!</h1>
-        <div class=""></div>
+        <div class='card m-3'>
+            <div class='card-body'>
+                <form>
+                    <div class="form-control">
+                        <label>Nome:</label>
+                        <input type='text'/>
+                    </div>
+                    <div class="form-control">
+                        <label>Email:</label>
+                        <input type='text'/>
+                    </div>
+                </form>
+            </div>
+            
+            
+        </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     </body>
     <footer class="bg-light  fixed-bottom">
