@@ -8,7 +8,10 @@ import com.aulaweb.aula04.model.ContatoModel;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -20,13 +23,13 @@ public class ContatoRepository {
     private static String user = "root";
     private static String password = "123";
     
-    private static final String INSERT_CONTATOS_SQL = "INSERT INTO aula04.contatos" + "  (name, email) VALUES "
+    private static final String INSERT_CONTATOS_SQL = "INSERT INTO aula04.contatos" + "  (nome, email) VALUES "
 			+ " (?, ?);";
 
-    private static final String SELECT_CONTATOS_BY_ID = "select id,name,email from aula04.contatos where id =?";
+    private static final String SELECT_CONTATOS_BY_ID = "select id,nome,email from aula04.contatos where id =?";
     private static final String SELECT_ALL_CONTATOS = "select * from aula04.contatos";
     private static final String DELETE_CONTATOS_SQL = "delete from aula04.contatos where id = ?;";
-    private static final String UPDATE_CONTATOS_SQL = "update aula04.contatos set name = ?,email= ?, country =? where id = ?;";
+    private static final String UPDATE_CONTATOS_SQL = "update aula04.contatos set nome = ?,email= ? where id = ?;";
 
     public ContatoRepository() {
 	}
@@ -73,21 +76,20 @@ public class ContatoRepository {
 
 			// Step 4: Process the ResultSet object.
 			while (rs.next()) {
-				String name = rs.getString("name");
+				String nome = rs.getString("nome");
 				String email = rs.getString("email");
-				String country = rs.getString("country");
-				contato = new ContatoModel(id, name, email);
+				contato = new ContatoModel(id, nome, email);
 			}
 		} catch (SQLException e) {
 			printSQLException(e);
 		}
-		return user;
+		return contato;
 	}
 
-	public List<User> selectAllUsers() {
+	public List<ContatoModel> selectAllUsers() {
 
 		// using try-with-resources to avoid closing resources (boiler plate code)
-		List<User> users = new ArrayList<>();
+		List<ContatoModel> contatos = new ArrayList<>();
 		// Step 1: Establishing a Connection
 		try (Connection connection = getConnection();
 
@@ -100,15 +102,14 @@ public class ContatoRepository {
 			// Step 4: Process the ResultSet object.
 			while (rs.next()) {
 				int id = rs.getInt("id");
-				String name = rs.getString("name");
+				String nome = rs.getString("nome");
 				String email = rs.getString("email");
-				String country = rs.getString("country");
-				users.add(new User(id, name, email, country));
+				contatos.add(new ContatoModel(id, nome, email));
 			}
 		} catch (SQLException e) {
 			printSQLException(e);
 		}
-		return users;
+		return contatos;
 	}
 
 	public boolean deleteUser(int id) throws SQLException {
@@ -121,14 +122,13 @@ public class ContatoRepository {
 		return rowDeleted;
 	}
 
-	public boolean updateUser(User user) throws SQLException {
+	public boolean updateUser(ContatoModel contato) throws SQLException {
 		boolean rowUpdated;
 		try (Connection connection = getConnection();
 				PreparedStatement statement = connection.prepareStatement(UPDATE_CONTATOS_SQL);) {
-			statement.setString(1, user.getName());
-			statement.setString(2, user.getEmail());
-			statement.setString(3, user.getCountry());
-			statement.setInt(4, user.getId());
+			statement.setString(1, contato.getNome());
+			statement.setString(2, contato.getEmail());
+			statement.setInt(4, contato.getId());
 
 			rowUpdated = statement.executeUpdate() > 0;
 		}

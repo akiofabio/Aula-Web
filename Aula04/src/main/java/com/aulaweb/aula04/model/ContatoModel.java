@@ -12,24 +12,20 @@ public class ContatoModel {
     private int id;
     private String nome;
     private String email;
-    private String endereco;
-    private String telefone;
 
-    public ContatoModel(int id, String nome, String email, String endereco, String telefone) {
+    public ContatoModel(int id, String nome, String email) {
         this.id = id;
         this.nome = nome;
         this.email = email;
-        this.endereco = endereco;
-        this.telefone = telefone;
-    }
-    
-    public ContatoModel(String nome, String email, String endereco, String telefone) {
-        this.nome = nome;
-        this.email = email;
-        this.endereco = endereco;
-        this.telefone = telefone;
     }
 
+    public ContatoModel(String nome, String email) {
+        this.nome = nome;
+        this.email = email;
+    }
+
+    
+    
     public int getId() {
         return id;
     }
@@ -37,7 +33,7 @@ public class ContatoModel {
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public String getNome() {
         return nome;
     }
@@ -54,19 +50,5 @@ public class ContatoModel {
         this.email = email;
     }
 
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
+    
 }
