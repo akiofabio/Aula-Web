@@ -18,18 +18,18 @@ import java.util.List;
  * @author Akio
  */
 public class ContatoRepository {
-    private static String driver = "org.postgresql.Driver";
-    private static String url = "jdbc:mysql://localhost:3306/aula4?useSSL=false";
+    private static String driver = "com.mysql.jdbc.Driver";
+    private static String url = "jdbc:mysql://localhost:3306/aula04?useSSL=false";
     private static String user = "root";
-    private static String password = "123";
+    private static String password = "1234";
     
     private static final String INSERT_CONTATOS_SQL = "INSERT INTO aula04.contatos" + "  (nome, email) VALUES "
 			+ " (?, ?);";
 
-    private static final String SELECT_CONTATOS_BY_ID = "select id,nome,email from aula04.contatos where id =?";
+    private static final String SELECT_CONTATOS_BY_ID = "select con_id,con_nome,con_email from aula04.contatos where con_id =?";
     private static final String SELECT_ALL_CONTATOS = "select * from aula04.contatos";
-    private static final String DELETE_CONTATOS_SQL = "delete from aula04.contatos where id = ?;";
-    private static final String UPDATE_CONTATOS_SQL = "update aula04.contatos set nome = ?,email= ? where id = ?;";
+    private static final String DELETE_CONTATOS_SQL = "delete from aula04.contatos where con_id = ?;";
+    private static final String UPDATE_CONTATOS_SQL = "update aula04.contatos set con_nome = ?,con_email= ? where con_id = ?;";
 
     public ContatoRepository() {
 	}
@@ -48,8 +48,7 @@ public class ContatoRepository {
 		}
 		return connection;
 	}
-
-	public void insertUser(ContatoModel contato) throws SQLException {
+	public void insert(ContatoModel contato) throws SQLException {
 		System.out.println(INSERT_CONTATOS_SQL);
 		// try-with-resource statement will auto close the connection.
 		try (Connection connection = getConnection();
@@ -63,7 +62,7 @@ public class ContatoRepository {
 		}
 	}
 
-	public ContatoModel selectUser(int id) {
+	public ContatoModel select(int id) {
 		ContatoModel contato = null;
 		// Step 1: Establishing a Connection
 		try (Connection connection = getConnection();
@@ -86,7 +85,7 @@ public class ContatoRepository {
 		return contato;
 	}
 
-	public List<ContatoModel> selectAllUsers() {
+	public List<ContatoModel> selectAll() {
 
 		// using try-with-resources to avoid closing resources (boiler plate code)
 		List<ContatoModel> contatos = new ArrayList<>();
@@ -101,9 +100,9 @@ public class ContatoRepository {
 
 			// Step 4: Process the ResultSet object.
 			while (rs.next()) {
-				int id = rs.getInt("id");
-				String nome = rs.getString("nome");
-				String email = rs.getString("email");
+				int id = rs.getInt("con_id");
+				String nome = rs.getString("con_nome");
+				String email = rs.getString("con_demail");
 				contatos.add(new ContatoModel(id, nome, email));
 			}
 		} catch (SQLException e) {
@@ -112,7 +111,7 @@ public class ContatoRepository {
 		return contatos;
 	}
 
-	public boolean deleteUser(int id) throws SQLException {
+	public boolean delete(int id) throws SQLException {
 		boolean rowDeleted;
 		try (Connection connection = getConnection();
 				PreparedStatement statement = connection.prepareStatement(DELETE_CONTATOS_SQL);) {
@@ -122,7 +121,7 @@ public class ContatoRepository {
 		return rowDeleted;
 	}
 
-	public boolean updateUser(ContatoModel contato) throws SQLException {
+	public boolean update(ContatoModel contato) throws SQLException {
 		boolean rowUpdated;
 		try (Connection connection = getConnection();
 				PreparedStatement statement = connection.prepareStatement(UPDATE_CONTATOS_SQL);) {

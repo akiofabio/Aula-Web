@@ -28,7 +28,7 @@
         <h1 class="m-5">Bem-vindo ao meu site!</h1>
         <div class='card m-3'>
             <div class='card-body'>
-                <form method="post" action="${pageContext.request.contextPath}/FormServlet">
+                <form method="post" action="${pageContext.request.contextPath}/ContatoServlet/insert">
                     <div class="form-control" >
                         <label>Nome:</label>
                         <input type='text' name="nome"/>

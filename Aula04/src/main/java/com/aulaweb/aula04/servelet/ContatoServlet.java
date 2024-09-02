@@ -14,6 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import static java.lang.System.out;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -21,7 +22,7 @@ import java.util.List;
  *
  * @author Akio
  */
-@WebServlet(name = "ContatoServlet", urlPatterns = {"/ContatoServlet"})
+@WebServlet(name = "ContatoServlet", urlPatterns = {"/ContatoServlet/*"})
 public class ContatoServlet extends HttpServlet {
     
     private static final long serialVersionUID = 1L;
@@ -35,7 +36,8 @@ public class ContatoServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getServletPath();
-
+        out.println("Teste:");
+        out.println(action);
         try {
             switch (action) {
                 case "/new":
@@ -62,12 +64,12 @@ public class ContatoServlet extends HttpServlet {
         }
     }
     private void listUser(HttpServletRequest request, HttpServletResponse response)
-			throws SQLException, IOException, ServletException {
-		List<ContatoModel> listContatos = contatoRepository.selectAllUsers();
-		request.setAttribute("listContatos", listContatos);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("todos_contatos.jsp");
-		dispatcher.forward(request, response);
-	}
+                throws SQLException, IOException, ServletException {
+        List<ContatoModel> listContatos = contatoRepository.selectAll();
+        request.setAttribute("listContatos", listContatos);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("response.jsp");
+        dispatcher.forward(request, response);
+    }
 
 	private void showNewForm(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -78,39 +80,36 @@ public class ContatoServlet extends HttpServlet {
 	private void showEditForm(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
-		User existingUser = userDAO.selectUser(id);
+		ContatoModel existingUser = contatoRepository.select(id);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("contato_form.jsp");
-		request.setAttribute("user", existingUser);
+		request.setAttribute("contato", existingUser);
 		dispatcher.forward(request, response);
-
 	}
 
 	private void insertUser(HttpServletRequest request, HttpServletResponse response) 
 			throws SQLException, IOException {
-		String name = request.getParameter("name");
+		String nome = request.getParameter("nome");
 		String email = request.getParameter("email");
-		String country = request.getParameter("country");
-		User newUser = new User(name, email, country);
-		userDAO.insertUser(newUser);
-		response.sendRedirect("list");
+		ContatoModel novoContato = new ContatoModel(nome, email);
+		contatoRepository.insert(novoContato);
+		response.sendRedirect("index.jsp");
 	}
 
 	private void updateUser(HttpServletRequest request, HttpServletResponse response) 
 			throws SQLException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
-		String name = request.getParameter("name");
+		String nome = request.getParameter("nome");
 		String email = request.getParameter("email");
-		String country = request.getParameter("country");
 
-		User book = new User(id, name, email, country);
-		userDAO.updateUser(book);
+		ContatoModel book = new ContatoModel(id, nome, email);
+		contatoRepository.update(book);
 		response.sendRedirect("list");
 	}
 
 	private void deleteUser(HttpServletRequest request, HttpServletResponse response) 
 			throws SQLException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
-		userDAO.deleteUser(id);
+		contatoRepository.delete(id);
 		response.sendRedirect("list");
 
 	}

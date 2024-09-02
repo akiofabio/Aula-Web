@@ -22,9 +22,7 @@ public class ContatoModel {
     public ContatoModel(String nome, String email) {
         this.nome = nome;
         this.email = email;
-    }
-
-    
+    }    
     
     public int getId() {
         return id;
