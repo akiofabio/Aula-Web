@@ -23,9 +23,7 @@ public class ContatoRepository {
     private static String user = "root";
     private static String password = "1234";
     
-    private static final String INSERT_CONTATOS_SQL = "INSERT INTO aula04.contatos" + "  (nome, email) VALUES "
-			+ " (?, ?);";
-
+    private static final String INSERT_CONTATOS_SQL = "INSERT INTO aula04.contatos (con_nome, con_email) VALUES(?, ?);";
     private static final String SELECT_CONTATOS_BY_ID = "select con_id,con_nome,con_email from aula04.contatos where con_id =?";
     private static final String SELECT_ALL_CONTATOS = "select * from aula04.contatos";
     private static final String DELETE_CONTATOS_SQL = "delete from aula04.contatos where con_id = ?;";
@@ -37,7 +35,7 @@ public class ContatoRepository {
 	protected Connection getConnection() {
 		Connection connection = null;
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			connection = DriverManager.getConnection(url, user, password);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -49,17 +47,17 @@ public class ContatoRepository {
 		return connection;
 	}
 	public void insert(ContatoModel contato) throws SQLException {
-		System.out.println(INSERT_CONTATOS_SQL);
-		// try-with-resource statement will auto close the connection.
-		try (Connection connection = getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CONTATOS_SQL)) {
-			preparedStatement.setString(1, contato.getNome());
-			preparedStatement.setString(2, contato.getEmail());
-			System.out.println(preparedStatement);
-			preparedStatement.executeUpdate();
-		} catch (SQLException e) {
-			printSQLException(e);
-		}
+            System.out.println(INSERT_CONTATOS_SQL);
+            // try-with-resource statement will auto close the connection.
+            try (Connection connection = getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CONTATOS_SQL)) {
+                preparedStatement.setString(1, contato.getNome());
+                preparedStatement.setString(2, contato.getEmail());
+                System.out.println(preparedStatement);
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                    printSQLException(e);
+            }
 	}
 
 	public ContatoModel select(int id) {
@@ -86,12 +84,12 @@ public class ContatoRepository {
 	}
 
 	public List<ContatoModel> selectAll() {
-
+            System.out.println("Erro1");
 		// using try-with-resources to avoid closing resources (boiler plate code)
 		List<ContatoModel> contatos = new ArrayList<>();
 		// Step 1: Establishing a Connection
 		try (Connection connection = getConnection();
-
+                        
 				// Step 2:Create a statement using connection object
 			PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_CONTATOS);) {
 			System.out.println(preparedStatement);
@@ -102,8 +100,9 @@ public class ContatoRepository {
 			while (rs.next()) {
 				int id = rs.getInt("con_id");
 				String nome = rs.getString("con_nome");
-				String email = rs.getString("con_demail");
+				String email = rs.getString("con_email");
 				contatos.add(new ContatoModel(id, nome, email));
+                                System.out.println("Erro2");
 			}
 		} catch (SQLException e) {
 			printSQLException(e);
