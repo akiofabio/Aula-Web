@@ -4,6 +4,8 @@
     Author     : Akio
 --%>
 
+<%@page import="java.util.List"%>
+<%@page import="com.aulaweb.aula04.model.Teste"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -17,6 +19,14 @@
         <header>
             <nav class="navbar navbar-expand-lg bg-light">
                 <div class="container-fluid">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Aula04/index.jsp">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <form action="/Aula04/ContatoServlet/contatos" method="get"><input class="nav-link" type="submit" value="Contatos"></form>
+                        </li>
+                    </ul>
                     <ul class="navbar-nav justify-content-end">
                         <li>
                             <a class="nav-link" href="https://akiofabio.github.io/Aula-Web/">Voltar</a>
@@ -26,9 +36,34 @@
             </nav>
         </header>
         <h1><%= request.getParameter("nome") %>, obrigado por enviar seu contato </h1>
-        <h2>e de novo </h2>
+        <h2>e de novo (Teste Session) </h2>
         <h1> <%= request.getSession().getAttribute("nome") %>, obrigado por enviar seu contato </h1>
-        <a href="/Aula04/index.jsp">Voltar</a>
+        
+        
+        <% if(request.getAttribute("testes") != null){ %>
+        <table class="table table-striped table-hover table-bordered m-2">
+                <thead>
+                    <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%    
+                    List<Teste> testes =(List<Teste>) request.getAttribute("testes");
+                    for(Teste teste : testes){
+                    %>
+                        <tr>
+                            <td><%= teste.getNome()%></td>
+                            <td><%= teste.getEmail()%></td>
+                        </tr>
+                    <%}%>
+                </tbody>
+            </table>
+        <% }else{ %>
+            <form action="FormServlet" method="get"><input class="button bt-primary" type="submit" value="Ver todos"></form>
+        <%}%>
+            <a href="/Aula04/index.jsp" class="m-3">Voltar</a>
     </body>
     <footer class="bg-light  fixed-bottom">
         <div class="row text-center">

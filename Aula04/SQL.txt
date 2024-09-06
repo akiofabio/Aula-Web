@@ -1,0 +1,14 @@
+CREATE TABLE aula04.contatos (
+    con_id     	INTEGER NOT NULL AUTO_INCREMENT,
+    con_nome	VARCHAR(30),
+    con_email	VARCHAR(30),
+    PRIMARY KEY ( con_id )
+)
+
+
+CREATE TABLE aula04.teste (
+    tes_id     	INTEGER NOT NULL AUTO_INCREMENT,
+    tes_nome	VARCHAR(30),
+    tes_email	VARCHAR(30),
+    PRIMARY KEY ( tes_id )
+)

@@ -4,11 +4,10 @@
  */
 package com.aulaweb.aula04.servelet;
 
-import com.aulaweb.aula04.model.ContatoModel;
-import com.aulaweb.aula04.repository.ContatoRepository;
+import com.aulaweb.aula04.model.Contato;
+import com.aulaweb.aula04.service.ContatoService;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -26,101 +25,113 @@ public class ContatoServlet extends HttpServlet {
     
     private static final long serialVersionUID = 1L;
         
-    final ContatoRepository repository;
-    
+    private static final String URL = "/Aula04/ContatoServlet";
+    private static final String URLbase = "/Aula04";
+    final ContatoService service;
+
     public ContatoServlet() {
-        this.repository = new ContatoRepository();
-           
+        this.service = new ContatoService();
     }
     
-    public ContatoServlet(ContatoRepository repository) {
+    public ContatoServlet(ContatoService service) {
             super();
-            this.repository = repository;
+            this.service = service;
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String action = request.getServletPath();
-        System.out.println("Teste:");
+        String action = request.getRequestURI().replace(URL,"");
         System.out.println(action);
         try {
             switch (action) {
-                case "/new":
-                        showNewForm(request, response);
-                        break;
-                case "/insert":
-                        insertUser(request, response);
-                        break;
-                case "/delete":
-                        deleteUser(request, response);
-                        break;
-                case "/edit":
-                        showEditForm(request, response);
-                        break;
-                case "/update":
-                        updateUser(request, response);
-                        break;
+                case "/contatos":
+                    mostrarContatos(request, response);
+                    break;
+                case "/novo":
+                    mostrarNovoContatoForm(request, response);
+                    break;
+                case "/salvar":
+                    salvar(request, response);
+                    break;
+                case "/deletar":
+                    deletar(request, response);
+                    break;
+                case "/alterar":
+                    mostrarAlterarContatoForm(request, response);
+                    break;
+                case "/salvarAlteracao":
+                    salvarAlteracao(request, response);
+                    break;
                 default:
-                    //listUser(request, response);
-                    insertUser(request, response);
+                    //mostrarContatos(request, response);
                     break;
                 }
         } catch (SQLException ex) {
                 throw new ServletException(ex);
         }
     }
-    private void listUser(HttpServletRequest request, HttpServletResponse response)
-                throws SQLException, IOException, ServletException {
-        List<ContatoModel> listContatos = repository.selectAll();
-        System.out.println(listContatos);
-        request.setAttribute("listContatos", listContatos);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+    
+    private void mostrarContatos(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        List<Contato> listContatos = service.selecionarTodos();
+        request.setAttribute("contatos", listContatos);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/contatos.jsp");
+        dispatcher.forward(request, response);
+    }
+    
+    private void mostrarNovoContatoForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/contato_form.jsp");
         dispatcher.forward(request, response);
     }
 
-	private void showNewForm(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		RequestDispatcher dispatcher = request.getRequestDispatcher("contato_form.jsp");
-		dispatcher.forward(request, response);
-	}
+    private void mostrarAlterarContatoForm(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        System.out.println("id: " + id);
+        Contato contato = service.selecionarPorId(id);
+        System.out.println(contato);
+        System.out.println(contato.getNome());
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/contato_form.jsp");
+        request.setAttribute("contato", contato);
+        dispatcher.forward(request, response);
+    }
 
-	private void showEditForm(HttpServletRequest request, HttpServletResponse response)
-			throws SQLException, ServletException, IOException {
-		int id = Integer.parseInt(request.getParameter("id"));
-		ContatoModel existingUser = repository.select(id);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("contato_form.jsp");
-		request.setAttribute("contato", existingUser);
-		dispatcher.forward(request, response);
-	}
+    private void salvar(HttpServletRequest request, HttpServletResponse response) 
+            throws SQLException, IOException, ServletException {
+        String nome = request.getParameter("nome");
+        String email = request.getParameter("email");
+        Contato novoContato = new Contato(nome, email);
+        System.out.println(novoContato.getId());
+        System.out.println(novoContato.getNome());
+        System.out.println(novoContato.getEmail());
+        service.savar(novoContato);
+        //response.sendRedirect(URLbase+"/index.jsp");
+        mostrarContatos(request, response);
+    }
 
-	private void insertUser(HttpServletRequest request, HttpServletResponse response) 
-                throws SQLException, IOException {
-            String nome = request.getParameter("nome");
-            String email = request.getParameter("email");
-            ContatoModel novoContato = new ContatoModel(nome, email);
-            repository.insert(novoContato);
-            response.sendRedirect("/index.jsp");
-	}
+    private void salvarAlteracao(HttpServletRequest request, HttpServletResponse response) 
+            throws SQLException, IOException, ServletException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        String nome = request.getParameter("nome");
+        String email = request.getParameter("email");
+        
+        Contato contato = new Contato(id, nome, email);
+        System.out.println(contato.getId());
+        System.out.println(contato.getNome());
+        System.out.println(contato.getEmail());
+        service.alterar(contato);
+        //response.sendRedirect(URLbase+"/index.jsp");
+        mostrarContatos(request, response);
+    }
 
-	private void updateUser(HttpServletRequest request, HttpServletResponse response) 
-			throws SQLException, IOException {
-		int id = Integer.parseInt(request.getParameter("id"));
-		String nome = request.getParameter("nome");
-		String email = request.getParameter("email");
-
-		ContatoModel contato = new ContatoModel(id, nome, email);
-		repository.update(contato);
-		response.sendRedirect("list");
-	}
-
-	private void deleteUser(HttpServletRequest request, HttpServletResponse response) 
-			throws SQLException, IOException {
-		int id = Integer.parseInt(request.getParameter("id"));
-		repository.delete(id);
-		response.sendRedirect("list");
-
-	}
+    private void deletar(HttpServletRequest request, HttpServletResponse response) 
+            throws SQLException, IOException, ServletException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        service.deletar(id);
+        mostrarContatos(request, response);
+    }
     
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

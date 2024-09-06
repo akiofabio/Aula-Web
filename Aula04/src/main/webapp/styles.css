@@ -2,7 +2,10 @@
 .text-indented{
     text-indent: 5%;
 }
-
+th.w-auto,td.w-auto{
+    white-space: nowrap;
+    width: 1px;
+}
 body{
     min-height: 100vh;
     display: flex;

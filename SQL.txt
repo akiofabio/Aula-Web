@@ -1,7 +1,0 @@
-CREATE TABLE aula04.contatos (
-    con_id     	INTEGER,
-    con_nome	VARCHAR(30),
-    con_email	VARCHAR(30)
-)
-
-ALTER TABLE aula04.contatos ADD CONSTRAINT pk_con PRIMARY KEY ( con_id )

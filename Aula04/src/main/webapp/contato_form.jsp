@@ -1,9 +1,10 @@
 <%-- 
-    Document   : index
-    Created on : 31 de ago. de 2024, 15:21:27
+    Document   : contato_form
+    Created on : 3 de set. de 2024, 07:17:40
     Author     : Akio
 --%>
 
+<%@page import="com.aulaweb.aula04.model.Contato"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -33,19 +34,32 @@
                 </div>
             </nav>
         </header>
-        <h1 class="m-5">Bem-vindo ao meu site!</h1>
+        <% 
+        Contato contato = new Contato("","");
+        if(request.getAttribute("contato")!=null){
+           contato = (Contato)request.getAttribute("contato");
+        %>
+            <h1 class="m-5">Alterar Contato</h1>
+        <%} else {%>
+            <h1 class="m-5">Novo Contato</h1>
+        <%}%>
         <div class='card m-3'>
             <div class='card-body'>
-                <form method="post" action="FormServlet">
-                    <div class="form-control" >
-                        <label>Nome:</label>
-                        <input type='text' name="nome"/>
+                <% if(request.getAttribute("contato")==null){%>
+                    <form method="post" action="/Aula04/ContatoServlet/salvar">
+                <%}else{%>
+                    <form method="post" action="/Aula04/ContatoServlet/salvarAlteracao">
+                        <input type="hidden" name="id" value="<%= contato.getId()%>" >
+                <%}%>
+                    <div class="m-3" >
+                        <label class="form-label">Nome:</label>
+                        <input class="form-control" type='text' name="nome" value="<%= contato.getNome()%>"/>
                     </div>
-                    <div class="form-control">
-                        <label>Email:</label>
-                        <input type='text' name="email"/>
+                    <div class="m-3">
+                        <label class="form-label">Email:</label>
+                        <input class="form-control" type='text' name="email" value="<%= contato.getEmail()%>"/>
                     </div>
-                    <button type="submit">Salvar</button>
+                    <button type="submit" class="btn btn-success">Salvar</button>
                 </form>
             </div>
         </div>

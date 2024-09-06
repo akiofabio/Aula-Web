@@ -1,0 +1,8 @@
+com\umc\bibliotecav2web\service\AuthService.class
+com\umc\bibliotecav2web\model\Livro.class
+com\umc\bibliotecav2web\model\Emprestimo.class
+com\umc\bibliotecav2web\servlet\LoginServlet.class
+com\umc\bibliotecav2web\service\LivroService.class
+com\umc\bibliotecav2web\servlet\CadastrarLivroServlet.class
+com\umc\bibliotecav2web\servlet\VisualizarLivrosServlet.class
+com\umc\bibliotecav2web\model\Usuario.class
