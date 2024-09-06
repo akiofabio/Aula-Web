@@ -16,7 +16,8 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        
+        response.sendRedirect("login.jsp?error=true");
+        /*
         if (authService.authenticate(username, password)) {
             // Credenciais válidas, redireciona para a página principal
             response.sendRedirect("index.jsp");
@@ -24,5 +25,6 @@ public class LoginServlet extends HttpServlet {
             // Credenciais inválidas, redireciona de volta para a página de login
             response.sendRedirect("login.jsp?error=true");
         }
+*/
     }
 }
