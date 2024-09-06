@@ -27,16 +27,7 @@ public class ContatoServlet extends HttpServlet {
         
     private static final String URL = "/Aula04/ContatoServlet";
     private static final String URLbase = "/Aula04";
-    final ContatoService service;
-
-    public ContatoServlet() {
-        this.service = new ContatoService();
-    }
-    
-    public ContatoServlet(ContatoService service) {
-            super();
-            this.service = service;
-    }
+    final ContatoService service = new ContatoService();
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

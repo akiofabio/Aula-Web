@@ -16,16 +16,8 @@ import java.util.List;
  * @author Akio
  */
 public class ContatoService {
-    final ContatoRepository repository;
+    final ContatoRepository repository = new ContatoRepository();
 
-    public ContatoService() {
-        this.repository = new ContatoRepository();
-    }
-    
-    public ContatoService(ContatoRepository repository) {
-        this.repository =  repository;
-    }
-    
     public Boolean savar(Contato contato)
             throws ServletException, IOException, SQLException {
         return repository.salvar(contato);
