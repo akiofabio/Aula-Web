@@ -38,13 +38,13 @@
         <h1>Contatos</h1>
         <form action="/Aula04/ContatoServlet/novo" method="post"><input type="submit" class="btn btn-success m-3" value="Novo Contato"/></form>
             <div  class="table-responsive m-4" >
-                <table class="table table-striped table-hover table-bordered" >
+                <table class="table table-striped table-hover table-bordered">
                     <thead>
                         <tr>
                             <th >Nome</th>
                             <th>Email</th>
-                            <th class="w-auto"></th>
-                            <th class="w-auto"></th>
+                            <th class="fixed-width-1"></th>
+                            <th class="fixed-width-1"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,15 +53,15 @@
                         for(Contato contato : contatos ){
                         %>
                             <tr>
-                                <td><%= contato.getNome()%></td>
-                                <td><%= contato.getEmail()%></td>
-                                <td class="w-auto">
+                                <td class="col-md-6"><%= contato.getNome()%></td>
+                                <td class="col-md-6"><%= contato.getEmail()%></td>
+                                <td class="col-md-1">
                                     <form action="/Aula04/ContatoServlet/alterar" method="post" style="width: auto;">
                                         <input type="hidden" name="id" value="<%= contato.getId()%>" >
                                         <input class="btn btn-primary" type="submit" value="Alterar">
                                     </form>
                                 </td>
-                                <td class="w-auto">
+                                <td class="col-md-1">
                                     <form action="/Aula04/ContatoServlet/deletar" method="post">
                                         <input type="hidden" name="id" value="<%= contato.getId()%>" >
                                         <input class="btn btn-danger" type="submit" value="Excluir">
