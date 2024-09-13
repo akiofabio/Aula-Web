@@ -28,7 +28,7 @@
                                 Usuário ou senha incorretos. Por favor, tente novamente.
                             </div>
                         <% } %>
-                        <form action="login" method="post">
+                        <form action="/login" method="post">
                             <div class="form-group">
                                 <label for="username">Usuário:</label>
                                 <input type="text" class="form-control" id="username" name="username" placeholder="Digite seu usuário">
