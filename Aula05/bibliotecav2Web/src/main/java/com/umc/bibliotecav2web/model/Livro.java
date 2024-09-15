@@ -16,7 +16,14 @@ public class Livro {
     }
 
     public Livro() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public Livro(String id, String titulo, String autor, int anoPublicacao, int numeroCopiasDisponiveis) {
+        this.id = id;
+        this.titulo = titulo;
+        this.autor = autor;
+        this.anoPublicacao = anoPublicacao;
+        this.numeroCopiasDisponiveis = numeroCopiasDisponiveis;
     }
 
     // Getters e Setters

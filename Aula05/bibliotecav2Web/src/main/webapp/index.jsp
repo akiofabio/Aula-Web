@@ -13,7 +13,7 @@
         <p class="lead">O que você gostaria de fazer?</p>
         <div class="list-group">
             <a href="/visualizarLivros" class="list-group-item list-group-item-action">Listar Livros Cadastrados</a>
-            <a href="/reservarLivro" class="list-group-item list-group-item-action">Reservar Livro para Empréstimo</a>
+            <a href="/reservarLivro" class="list-group-item list-group-item-action">Listar Reservas de Livros</a>
         </div>
     </div>
     <!-- Link para o arquivo JavaScript do Bootstrap hospedado no CDN (opcional, se necessário) -->

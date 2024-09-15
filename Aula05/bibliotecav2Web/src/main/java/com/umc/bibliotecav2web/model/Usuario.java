@@ -7,12 +7,20 @@ public class Usuario {
     private String id;
     private String nome;
     private String numeroIdentificacao;
-    private List<Livro> livrosEmprestados;
+
+    public Usuario(String id, String nome, String numeroIdentificacao) {
+        this.id = id;
+        this.nome = nome;
+        this.numeroIdentificacao = numeroIdentificacao;
+    }
 
     // Construtor
     public Usuario(String nome, String numeroIdentificacao) {
         this.nome = nome;
         this.numeroIdentificacao = numeroIdentificacao;
+    }
+
+    public Usuario() {
     }
 
     // Getters e Setters
@@ -38,13 +46,5 @@ public class Usuario {
 
     public void setNumeroIdentificacao(String numeroIdentificacao) {
         this.numeroIdentificacao = numeroIdentificacao;
-    }
-
-    public List<Livro> getLivrosEmprestados() {
-        return livrosEmprestados;
-    }
-
-    public void setLivrosEmprestados(List<Livro> livrosEmprestados) {
-        this.livrosEmprestados = livrosEmprestados;
     }
 }

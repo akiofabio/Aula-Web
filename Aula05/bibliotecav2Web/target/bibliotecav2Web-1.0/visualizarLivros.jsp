@@ -42,8 +42,14 @@
                         <td><%= livro.getAnoPublicacao() %></td>
                         <td><%= livro.getNumeroCopiasDisponiveis()%></td>
                         <td>
-                            <form action="deleteBook" method="post" style="display:inline;">
-                                <input type="hidden" name="bookId" value="${livro.id}">
+                            <form action="alterarLivro" method="get" style="display:inline;">
+                                <input type="hidden" name="id" value="<%= livro.getId()%>">
+                                <button type="submit" class="btn btn-success">Alterar</button>
+                            </form>
+                        
+                            <form action="deletarLivro" method="post" style="display:inline;">
+                                
+                                <input type="hidden" name="id" value="<%= livro.getId()%>">
                                 <button type="submit" class="btn btn-danger">Excluir</button>
                             </form>
                         </td>

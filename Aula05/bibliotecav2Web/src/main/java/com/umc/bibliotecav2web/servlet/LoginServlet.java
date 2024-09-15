@@ -1,5 +1,6 @@
 package com.umc.bibliotecav2web.servlet;
 
+import com.umc.bibliotecav2web.model.Usuario;
 import com.umc.bibliotecav2web.service.AuthService;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -18,7 +19,6 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
         
         if (authService.authenticate(username, password)) {
-            // Credenciais válidas, redireciona para a página principal
             response.sendRedirect("index.jsp");
         } else {
             // Credenciais inválidas, redireciona de volta para a página de login
