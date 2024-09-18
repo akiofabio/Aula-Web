@@ -30,7 +30,7 @@ public class VisualizarReservasServlet extends HttpServlet {
         
         List<Reserva> listaReservas = reservaService.getBy(reserva);
         request.setAttribute("revervas", listaReservas);
-        request.getRequestDispatcher("visualizarRevervas.jsp").forward(request, response);
+        request.getRequestDispatcher("visualisarReservas.jsp").forward(request, response);
     }
     
 }

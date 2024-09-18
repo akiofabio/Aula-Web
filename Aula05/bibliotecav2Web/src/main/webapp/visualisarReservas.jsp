@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Livros</title>
+    <title>Lista de Reserva</title>
     <!-- Adicione o link para o arquivo CSS do Bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -73,7 +73,7 @@
     </div>
 
     <!-- Botão flutuante para chamar a página de cadastro de livros -->
-    <a href="cadastrarLivro.jsp" class="btn btn-primary floating-button">
+    <a href="acharUsuarioReserva.jsp" class="btn btn-primary floating-button">
         <span style="font-size: 1.5em;">+</span>
     </a>
     <!-- Adicione o link para o arquivo JS do Bootstrap (opcional, para funcionalidades extras) -->

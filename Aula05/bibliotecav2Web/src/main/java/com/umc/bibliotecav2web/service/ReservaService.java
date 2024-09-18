@@ -4,13 +4,16 @@
  */
 package com.umc.bibliotecav2web.service;
 
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.umc.bibliotecav2web.model.Livro;
 import com.umc.bibliotecav2web.model.Reserva;
 import com.umc.bibliotecav2web.model.Usuario;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -23,10 +26,6 @@ public class ReservaService {
     String profMongo = "mongodb+srv://alunosumc:alunosumc_2024@biblioteca.jjf94mj.mongodb.net/";
     String myMongo = "mongodb+srv://web:123@cluster0.ahyoi.mongodb.net/";
     
-    public List<Reserva> getAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
     public List<Reserva> getBy(Reserva reserva) {
         List<Reserva> listaReservas = new ArrayList<>();
         try (MongoClient mongoClient = MongoClients.create(  myMongo)){ 
@@ -49,16 +48,16 @@ public class ReservaService {
                     doc.append("usuario",  new ObjectId(usuario.getId()));
                 }
                 if(usuario.getNome() != null){
-                    
-                    UsuarioService usuarioService = new UsuarioService();
-                    Usuario usuarioTemp = usuarioService.getBy(usuario);
-                    doc.append("usuario",  new ObjectId(usuario.getId()));
+                   //Não implementado 
+                }
+                if(usuario.getNumeroIdentificacao() != null){
+                   //Não implementado 
                 }
             }
-            if(reserva.getTitulo()!= null){
-                doc.append("numeroCopiasDisponiveis", reserva.getNumeroCopiasDisponiveis());
+            if(reserva.getLivros()!= null){
+                //Não implementado 
             }
-
+            
             FindIterable<Document> documents;
             if(doc.isEmpty()){
                 documents = collection.find();
@@ -69,11 +68,24 @@ public class ReservaService {
             // Crianto objetos Livro de forma iterativa
             for (Document document : documents) {
                 ObjectId id = document.getObjectId("_id");
-                String titulo = document.getString("titulo");
-                String autor = document.getString("autor");
-                int anoPublicacao = document.getInteger("anoPublicacao");
-                int numeroCopiasDisponiveis = document.getInteger("numeroCopiasDisponiveis");
-                Reserva reservaAchado = new Reserva(id.toString(),titulo, autor, anoPublicacao, numeroCopiasDisponiveis);
+                String status = document.getString("status");
+                Date dataReserva = document.getDate("dataReserva");
+                
+                UsuarioService usuarioService = new UsuarioService();
+                Usuario usuarioTemp = new Usuario();
+                usuarioTemp.setId(document.getObjectId("usuario").toString());
+                Usuario usuario = usuarioService.getBy(usuarioTemp).getFirst();
+                
+                LivroService livroService = new LivroService();
+                List<ObjectId> livrosId = document.getList("livros", ObjectId.class);
+                List<Livro> livros = new ArrayList<>();
+                for(ObjectId livroId : livrosId){
+                    Livro livroTemp = new Livro();
+                    livroTemp.setId(livroId.toString());
+                    livros.add(livroService.getLivrosBy(livroTemp).getFirst());
+                }
+                
+                Reserva reservaAchado = new Reserva(id.toString(), usuario ,livros,dataReserva,status);
                 listaReservas.add(reservaAchado);
             }
         } catch (Exception e) {
@@ -81,4 +93,23 @@ public class ReservaService {
         return listaReservas;
     }
     
+    public void newReserva(Reserva reserva) {
+        try (MongoClient mongoClient = MongoClients.create(myMongo)) {
+            MongoDatabase database = mongoClient.getDatabase("biblioteca");
+            MongoCollection<Document> collection = database.getCollection("livros");
+            if (collection == null) {
+                System.out.println("A coleção não foi inicializada corretamente.");
+                return;
+            }
+            List<ObjectId> livrosId = new ArrayList<>();
+            for(Livro livro : reserva.getLivros()){
+                livrosId.add(new ObjectId(livro.getId()));
+            }
+            Document doc = new Document("usuario", new ObjectId(reserva.getUsuario().getId()))
+                    .append("livros",livrosId)
+                    .append("dataReserva", reserva.getDataReserva())
+                    .append("status", reserva.getStatus());
+            collection.insertOne(doc);
+        }
+    }
 }
