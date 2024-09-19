@@ -13,8 +13,11 @@ import com.umc.bibliotecav2web.model.Livro;
 import com.umc.bibliotecav2web.model.Reserva;
 import com.umc.bibliotecav2web.model.Usuario;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -26,6 +29,7 @@ public class ReservaService {
     String profMongo = "mongodb+srv://alunosumc:alunosumc_2024@biblioteca.jjf94mj.mongodb.net/";
     String myMongo = "mongodb+srv://web:123@cluster0.ahyoi.mongodb.net/";
     
+    final LivroService livroService = new LivroService();
     public List<Reserva> getBy(Reserva reserva) {
         List<Reserva> listaReservas = new ArrayList<>();
         try (MongoClient mongoClient = MongoClients.create(  myMongo)){ 
@@ -76,7 +80,6 @@ public class ReservaService {
                 usuarioTemp.setId(document.getObjectId("usuario").toString());
                 Usuario usuario = usuarioService.getBy(usuarioTemp).getFirst();
                 
-                LivroService livroService = new LivroService();
                 List<ObjectId> livrosId = document.getList("livros", ObjectId.class);
                 List<Livro> livros = new ArrayList<>();
                 for(ObjectId livroId : livrosId){
@@ -93,23 +96,39 @@ public class ReservaService {
         return listaReservas;
     }
     
-    public void newReserva(Reserva reserva) {
+    public boolean newReserva(Reserva reserva) {
         try (MongoClient mongoClient = MongoClients.create(myMongo)) {
             MongoDatabase database = mongoClient.getDatabase("biblioteca");
             MongoCollection<Document> collection = database.getCollection("livros");
             if (collection == null) {
                 System.out.println("A coleção não foi inicializada corretamente.");
-                return;
+                return false;
             }
             List<ObjectId> livrosId = new ArrayList<>();
             for(Livro livro : reserva.getLivros()){
                 livrosId.add(new ObjectId(livro.getId()));
             }
+            Set<Livro> livrosSemDuplicada = new LinkedHashSet<>(reserva.getLivros());
+            for(Livro livro : livrosSemDuplicada){
+                int count = Collections.frequency(livrosId, livro);
+                Livro livroTemp = livroService.getLivrosBy(livro).getFirst();
+                if(livroTemp.getNumeroCopiasDisponiveis()<count){
+                    return false;
+                }
+            }
+            for(Livro livro : livrosSemDuplicada){
+                int count = Collections.frequency(livrosId, livro);
+                Livro livroTemp = livroService.getLivrosBy(livro).getFirst();
+                livroTemp.setNumeroCopiasDisponiveis(livroTemp.getNumeroCopiasDisponiveis() - count);
+                livroService.updateLivro(livroTemp);
+            }
+            
             Document doc = new Document("usuario", new ObjectId(reserva.getUsuario().getId()))
                     .append("livros",livrosId)
                     .append("dataReserva", reserva.getDataReserva())
                     .append("status", reserva.getStatus());
             collection.insertOne(doc);
+            return true;
         }
     }
 }

@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.umc.bibliotecav2web.model.Reserva"%>
 <%@page import="java.util.List"%>
 <%@page import="com.umc.bibliotecav2web.model.Livro"%>
@@ -23,8 +24,11 @@
     <div class="container">
         <h1 class="mt-4 mb-4">Reservas</h1>
         
-            <% 
-            List<Reserva> reservas = (List<Reserva>) request.getAttribute("reservas");
+            <%
+            List<Reserva> reservas = new ArrayList();
+            if(request.getAttribute("reservas") != null){
+                reservas = (List<Reserva>) request.getAttribute("reservas");
+            }
             for (Reserva reserva : reservas) {
             %>
                 <div class="card">
