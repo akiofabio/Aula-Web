@@ -30,6 +30,44 @@ public class ReservaService {
     String myMongo = "mongodb+srv://web:123@cluster0.ahyoi.mongodb.net/";
     
     final LivroService livroService = new LivroService();
+    
+    public List<Reserva> getAll() {
+        List<Reserva> listaReservas = new ArrayList<>();
+        try (MongoClient mongoClient = MongoClients.create(  myMongo)){ 
+            MongoDatabase database = mongoClient.getDatabase("biblioteca");
+            MongoCollection<Document> collection = database.getCollection("reservas");
+
+           
+            FindIterable<Document> documents;
+            documents = collection.find();
+           
+            // Crianto objetos Livro de forma iterativa
+            for (Document document : documents) {
+                ObjectId id = document.getObjectId("_id");
+                String status = document.getString("status");
+                Date dataReserva = document.getDate("dataReserva");
+                
+                UsuarioService usuarioService = new UsuarioService();
+                Usuario usuarioTemp = new Usuario();
+                usuarioTemp.setId(document.getObjectId("usuario").toString());
+                Usuario usuario = usuarioService.getBy(usuarioTemp).getFirst();
+                
+                List<ObjectId> livrosId = document.getList("livros", ObjectId.class);
+                List<Livro> livros = new ArrayList<>();
+                for(ObjectId livroId : livrosId){
+                    Livro livroTemp = new Livro();
+                    livroTemp.setId(livroId.toString());
+                    livros.add(livroService.getLivrosBy(livroTemp).getFirst());
+                }
+                
+                Reserva reservaAchado = new Reserva(id.toString(),usuario,livros,dataReserva,status);
+                listaReservas.add(reservaAchado);
+            }
+        } catch (Exception e) {
+        }
+        return listaReservas;
+    }
+    
     public List<Reserva> getBy(Reserva reserva) {
         List<Reserva> listaReservas = new ArrayList<>();
         try (MongoClient mongoClient = MongoClients.create(  myMongo)){ 
@@ -88,7 +126,7 @@ public class ReservaService {
                     livros.add(livroService.getLivrosBy(livroTemp).getFirst());
                 }
                 
-                Reserva reservaAchado = new Reserva(id.toString(), usuario ,livros,dataReserva,status);
+                Reserva reservaAchado = new Reserva(id.toString(),new Usuario(),new ArrayList<Livro>(),dataReserva,status);
                 listaReservas.add(reservaAchado);
             }
         } catch (Exception e) {
@@ -99,29 +137,39 @@ public class ReservaService {
     public boolean newReserva(Reserva reserva) {
         try (MongoClient mongoClient = MongoClients.create(myMongo)) {
             MongoDatabase database = mongoClient.getDatabase("biblioteca");
-            MongoCollection<Document> collection = database.getCollection("livros");
+            MongoCollection<Document> collection = database.getCollection("reservas");
             if (collection == null) {
                 System.out.println("A coleção não foi inicializada corretamente.");
                 return false;
             }
+            
             List<ObjectId> livrosId = new ArrayList<>();
             for(Livro livro : reserva.getLivros()){
                 livrosId.add(new ObjectId(livro.getId()));
             }
+            
             Set<Livro> livrosSemDuplicada = new LinkedHashSet<>(reserva.getLivros());
             for(Livro livro : livrosSemDuplicada){
-                int count = Collections.frequency(livrosId, livro);
-                Livro livroTemp = livroService.getLivrosBy(livro).getFirst();
+                int count = Collections.frequency(livrosId, new ObjectId(livro.getId()) );
+                System.out.println("count= " + count);
+                Livro livroProcurar = new Livro();
+                livroProcurar.setId(livro.getId());
+                Livro livroTemp = livroService.getLivrosBy(livroProcurar).getFirst();
                 if(livroTemp.getNumeroCopiasDisponiveis()<count){
                     return false;
                 }
             }
             for(Livro livro : livrosSemDuplicada){
-                int count = Collections.frequency(livrosId, livro);
-                Livro livroTemp = livroService.getLivrosBy(livro).getFirst();
+                int count = Collections.frequency(livrosId, new ObjectId(livro.getId()) );
+                System.out.println("count= " + count);
+                Livro livroProcurar = new Livro();
+                livroProcurar.setId(livro.getId());
+                Livro livroTemp = livroService.getLivrosBy(livroProcurar).getFirst();
                 livroTemp.setNumeroCopiasDisponiveis(livroTemp.getNumeroCopiasDisponiveis() - count);
                 livroService.updateLivro(livroTemp);
             }
+            
+            
             
             Document doc = new Document("usuario", new ObjectId(reserva.getUsuario().getId()))
                     .append("livros",livrosId)

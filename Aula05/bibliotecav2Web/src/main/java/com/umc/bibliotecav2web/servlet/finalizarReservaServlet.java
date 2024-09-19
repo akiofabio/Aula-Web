@@ -24,8 +24,8 @@ import java.util.List;
  *
  * @author Akio
  */
-@WebServlet(name = "finalizarReservaServlet", urlPatterns = {"/finalizarReservaServlet"})
-public class finalizarReservaServlet extends HttpServlet {
+@WebServlet(name = "finalizarReservaServlet", urlPatterns = {"/finalizarReserva"})
+public class FinalizarReservaServlet extends HttpServlet {
     final ReservaService reservaService = new ReservaService();
     
     @Override
@@ -34,8 +34,12 @@ public class finalizarReservaServlet extends HttpServlet {
         Usuario usuario = (Usuario)request.getSession().getAttribute("usuarioReserva");
         List<Livro> livrosReservados = (List<Livro>)request.getSession().getAttribute("livrosReservados");
         Reserva reserva = new Reserva(usuario,livrosReservados,new Date(),"Aberta");
-        reservaService.newReserva(reserva);
-        request.getRequestDispatcher("visualisarReservas.jsp").forward(request, response);
+        if(reservaService.newReserva(reserva)){
+            response.sendRedirect("visualizarReservas");
+        }
+        else{
+            response.sendRedirect("selecionarLivrosReserva.jsp?error=true");
+        }
     }
     
 }

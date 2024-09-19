@@ -6,9 +6,9 @@ com\umc\bibliotecav2web\servlet\LoginServlet.class
 com\umc\bibliotecav2web\service\LivroService.class
 com\umc\bibliotecav2web\service\ReservaService.class
 com\umc\bibliotecav2web\servlet\DeletarLivroServlet.class
-com\umc\bibliotecav2web\servlet\finalizarReservaServlet.class
 com\umc\bibliotecav2web\servlet\CriarReservaServlet.class
 com\umc\bibliotecav2web\servlet\VisualizarLivrosServlet.class
+com\umc\bibliotecav2web\servlet\FinalizarReservaServlet.class
 com\umc\bibliotecav2web\servlet\AcharUsuarioReservaServlet.class
 com\umc\bibliotecav2web\model\Livro.class
 com\umc\bibliotecav2web\service\UsuarioService.class

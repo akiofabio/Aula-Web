@@ -33,10 +33,14 @@
             %>
                 <div class="card">
                     <div class="card-header">
-                        <tr>
-                            <td>Status: <%= reserva.getStatus() %></td>
-                            <td>Data: <%= reserva.getDataReserva() %></td>
-                        </tr>
+                        <div class="row">
+                            <div class="col">
+                                Status: <%= reserva.getStatus() %>
+                            </div>
+                            <div class="col">
+                                Data: <%= reserva.getDataReserva() %>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
                         <table class="table table-striped">

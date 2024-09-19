@@ -7,6 +7,7 @@ package com.umc.bibliotecav2web.servlet;
 import com.umc.bibliotecav2web.model.Livro;
 import com.umc.bibliotecav2web.model.Reserva;
 import com.umc.bibliotecav2web.model.Usuario;
+import com.umc.bibliotecav2web.service.LivroService;
 import com.umc.bibliotecav2web.service.ReservaService;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,6 +27,7 @@ import java.util.List;
 @WebServlet(name = "CriarReservaServlet", urlPatterns = {"/CriarReservaServlet"})
 public class CriarReservaServlet extends HttpServlet {
     final ReservaService reservaService = new ReservaService();
+    final LivroService livroService = new LivroService();
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -47,8 +49,14 @@ public class CriarReservaServlet extends HttpServlet {
             livros.add(livro);
         }
         Reserva reserva = new Reserva(usuario,livros ,new Date(), "Aberta");
-        reservaService.newReserva(reserva);
-        response.sendRedirect("visualizarReservas");
+        if(reservaService.newReserva(reserva)){
+            response.sendRedirect("visualizarReservas");
+        }
+        else{
+            List<Livro> todosLivros = livroService.getAllLivros();
+            request.setAttribute("livros", todosLivros);
+            request.getRequestDispatcher("selecionarLivrosReserva.jsp?error=true").forward(request, response);
+        }
     }
         
 }

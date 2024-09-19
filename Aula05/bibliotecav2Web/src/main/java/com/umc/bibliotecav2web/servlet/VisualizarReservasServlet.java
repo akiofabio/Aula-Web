@@ -20,16 +20,8 @@ public class VisualizarReservasServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ReservaService reservaService = new ReservaService();
-        
-        String id = (String) request.getSession().getAttribute("idUsuario");
-        Usuario usario = new Usuario();
-        usario.setId(id);
-        
-        Reserva reserva = new Reserva();
-        reserva.setUsuario(usario);
-        
-        List<Reserva> listaReservas = reservaService.getBy(reserva);
-        request.setAttribute("revervas", listaReservas);
+        List<Reserva> listaReservas = reservaService.getAll();
+        request.setAttribute("reservas", listaReservas);
         request.getRequestDispatcher("visualisarReservas.jsp").forward(request, response);
     }
     

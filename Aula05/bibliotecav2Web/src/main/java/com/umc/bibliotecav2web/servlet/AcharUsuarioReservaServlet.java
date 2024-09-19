@@ -45,6 +45,5 @@ public class AcharUsuarioReservaServlet extends HttpServlet {
             request.getSession().setAttribute("usuarioReserva", usuarioResul.getFirst());
             request.getRequestDispatcher("selecionarLivrosReserva.jsp").forward(request, response);
         }
-        
     }
 }
