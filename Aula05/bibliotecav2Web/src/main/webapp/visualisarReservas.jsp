@@ -75,7 +75,7 @@
                     </form>
 
                     <form action="deletarReserva" method="post" style="display:inline;">
-                        <input type="hidden" name="id" value="<%= reserva.getId()%>">
+                        <input type="hidden" name="id" value="<%= reserva.getId()%>" disabled="true">
                         <button type="submit" class="btn btn-danger">Excluir</button>
                     </form>
                 </div>

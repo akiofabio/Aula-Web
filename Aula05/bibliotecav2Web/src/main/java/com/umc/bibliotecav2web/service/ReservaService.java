@@ -15,6 +15,7 @@ import com.umc.bibliotecav2web.model.Usuario;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -167,8 +168,6 @@ public class ReservaService {
                 livroService.updateLivro(livroTemp);
             }
             
-            
-            
             Document doc = new Document("usuario", new ObjectId(reserva.getUsuario().getId()))
                     .append("livros",livrosId)
                     .append("dataReserva", reserva.getDataReserva())
@@ -194,27 +193,30 @@ public class ReservaService {
             List<ObjectId> livrosId = new ArrayList<>();
             for(Livro livro : reserva.getLivros()){
                 livrosId.add(new ObjectId(livro.getId()));
+                System.out.println("livrosAntigosId: " + livrosAntigosId);
             }
             
-            Set<Livro> livrosSemDuplicada = new LinkedHashSet<>(reserva.getLivros());
-            for(Livro livro : livrosSemDuplicada){
-                int count = Collections.frequency(livrosId, new ObjectId(livro.getId()));
-                int countAntigo = Collections.frequency(livrosAntigosId, new ObjectId(livro.getId()));
+            List<ObjectId> livrosIdSemDuplicada = new ArrayList<>(new HashSet<>(livrosId)) ;
+            System.out.println("livrosId: " + livrosId.size());
+            System.out.println("livrosIdSemDuplicada: " + livrosIdSemDuplicada.size());
+            for(ObjectId livroId : livrosIdSemDuplicada){
+                int count = Collections.frequency(livrosId, livroId);
+                int countAntigo = Collections.frequency(livrosAntigosId, livroId);
                 int countTotal = count - countAntigo;
                 Livro livroProcurar = new Livro();
-                livroProcurar.setId(livro.getId());
+                livroProcurar.setId(livroId.toString());
                 Livro livroTemp = livroService.getLivrosBy(livroProcurar).getFirst();
                 if(countTotal>0 && livroTemp.getNumeroCopiasDisponiveis()<countTotal){
                     return false;
                 }
             }
-            for(Livro livro : livrosSemDuplicada){
-                int count = Collections.frequency(livrosId, new ObjectId(livro.getId()) );
-                int countAntigo = Collections.frequency(livrosAntigosId, new ObjectId(livro.getId()));
+            for(ObjectId livroId : livrosIdSemDuplicada){
+                int count = Collections.frequency(livrosId, livroId);
+                int countAntigo = Collections.frequency(livrosAntigosId, livroId);
                 int countTotal = count - countAntigo;
                 if(countTotal!=0){
                     Livro livroProcurar = new Livro();
-                    livroProcurar.setId(livro.getId());
+                    livroProcurar.setId(livroId.toString());
                     Livro livroTemp = livroService.getLivrosBy(livroProcurar).getFirst();
                     livroTemp.setNumeroCopiasDisponiveis(livroTemp.getNumeroCopiasDisponiveis() - countTotal);
                     livroService.updateLivro(livroTemp);
