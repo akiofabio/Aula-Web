@@ -35,6 +35,10 @@ public class Reserva {
         this.dataReserva = dataReserva;
         this.status = status;
     }
+
+    public Reserva(String id) {
+                this.id = id;
+    }
     
     public String getId() {
         return id;

@@ -16,7 +16,7 @@
         <div class="card m-3">
             <div class="card-body">
                 <%
-                if(request.getParameter("error") == "true"){
+                if(request.getAttribute("error") == "true"){
                 %>
                     <div class="alert alert-danger" role="alert">
                         Livro(s) não disponível(is)
@@ -26,6 +26,9 @@
                 Usuario usuario = (Usuario)request.getSession().getAttribute("usuarioReserva"); 
                 List<Livro> livrosReservados = (List<Livro>) request.getSession().getAttribute("livrosReservados");
                 %>
+                <div class="row ml-2">
+                    <h3>ID: <%= request.getSession().getAttribute("idReserva") %></h3>
+                </div>
                 <div class="row ml-2">
                     <h3>Nome: <%= usuario.getNome() %></h3>
                 </div>
@@ -60,19 +63,40 @@
                         <% } %>
                     </tbody>
                 </table>
-                <% if(livrosReservados.isEmpty()){ %>
-                    <input type="submit" class="btn btn-primary" value="Finalizar Reserva" disabled="true">
                 <% 
+                if(livrosReservados.isEmpty()){ 
+                    if(request.getSession().getAttribute("idReserva")==null){
+                %>
+                        <input type="submit" class="btn btn-primary" value="Finalizar Reserva" disabled="true">
+                        <a href="/index.jsp" class="btn btn-danger">Cancelar</a>
+                <%
+                    }
+                    else{
+                %>
+                    <input type="submit" class="btn btn-primary" value="Aleterar Reserva" disabled="true">
+                    <a href="/index.jsp" class="btn btn-danger">Cancelar</a>
+                <%
+                    }
                 }
                 else{
+                    if(request.getSession().getAttribute("idReserva")==null){
                 %>
-                    <form action="finalizarReserva" method="post" class="mt-4">
-                        <input type="submit" class="btn btn-primary" value="Finalizar Reserva">
-                    </form>
-                <%}%>
-                <form action="cancelarReserva" method="post" class="mt-4">
-                    <input type="submit" class="btn btn-danger" value="Cancelar">
-                </form>   
+                        <form action="finalizarReserva" method="post" class="mt-4">
+                            <input type="submit" class="btn btn-primary" value="Finalizar Reserva">
+                            <a href="/index.jsp" class="btn btn-danger">Cancelar</a>
+                        </form>
+                <%
+                    }
+                    else{
+                %>
+                        <form action="alterarReserva" method="post" class="mt-4">
+                            <input type="submit" class="btn btn-primary" value="Alterar Reserva">
+                            <a href="/index.jsp" class="btn btn-danger">Cancelar</a>
+                        </form>
+                <%
+                    }
+                }
+                %>
             </div>
         </div>
         <form >

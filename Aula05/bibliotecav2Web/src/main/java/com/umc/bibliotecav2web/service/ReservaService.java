@@ -107,7 +107,6 @@ public class ReservaService {
             else{
                 documents = collection.find(doc);
             }
-            // Crianto objetos Livro de forma iterativa
             for (Document document : documents) {
                 ObjectId id = document.getObjectId("_id");
                 String status = document.getString("status");
@@ -126,7 +125,7 @@ public class ReservaService {
                     livros.add(livroService.getLivrosBy(livroTemp).getFirst());
                 }
                 
-                Reserva reservaAchado = new Reserva(id.toString(),new Usuario(),new ArrayList<Livro>(),dataReserva,status);
+                Reserva reservaAchado = new Reserva(id.toString(),usuario,livros,dataReserva,status);
                 listaReservas.add(reservaAchado);
             }
         } catch (Exception e) {
@@ -151,7 +150,6 @@ public class ReservaService {
             Set<Livro> livrosSemDuplicada = new LinkedHashSet<>(reserva.getLivros());
             for(Livro livro : livrosSemDuplicada){
                 int count = Collections.frequency(livrosId, new ObjectId(livro.getId()) );
-                System.out.println("count= " + count);
                 Livro livroProcurar = new Livro();
                 livroProcurar.setId(livro.getId());
                 Livro livroTemp = livroService.getLivrosBy(livroProcurar).getFirst();
@@ -176,6 +174,71 @@ public class ReservaService {
                     .append("dataReserva", reserva.getDataReserva())
                     .append("status", reserva.getStatus());
             collection.insertOne(doc);
+            return true;
+        }
+    }
+
+    public boolean updateReserva(Reserva reserva) {
+        try (MongoClient mongoClient = MongoClients.create(myMongo)) {
+            MongoDatabase database = mongoClient.getDatabase("biblioteca");
+            MongoCollection<Document> collection = database.getCollection("reservas");
+            if (collection == null) {
+                System.out.println("A coleção não foi inicializada corretamente.");
+                return false;
+            }
+            System.out.println(reserva.getId());
+            Document queryDoc = new Document("_id",new ObjectId(reserva.getId()));
+            Document documentReservaAntiga = collection.find(queryDoc).first();
+            List<ObjectId> livrosAntigosId = documentReservaAntiga.getList("livros",ObjectId.class);
+            System.out.println("livrosAntigosId: " + livrosAntigosId);
+            List<ObjectId> livrosId = new ArrayList<>();
+            for(Livro livro : reserva.getLivros()){
+                livrosId.add(new ObjectId(livro.getId()));
+            }
+            
+            Set<Livro> livrosSemDuplicada = new LinkedHashSet<>(reserva.getLivros());
+            for(Livro livro : livrosSemDuplicada){
+                int count = Collections.frequency(livrosId, new ObjectId(livro.getId()));
+                int countAntigo = Collections.frequency(livrosAntigosId, new ObjectId(livro.getId()));
+                int countTotal = count - countAntigo;
+                Livro livroProcurar = new Livro();
+                livroProcurar.setId(livro.getId());
+                Livro livroTemp = livroService.getLivrosBy(livroProcurar).getFirst();
+                if(countTotal>0 && livroTemp.getNumeroCopiasDisponiveis()<countTotal){
+                    return false;
+                }
+            }
+            for(Livro livro : livrosSemDuplicada){
+                int count = Collections.frequency(livrosId, new ObjectId(livro.getId()) );
+                int countAntigo = Collections.frequency(livrosAntigosId, new ObjectId(livro.getId()));
+                int countTotal = count - countAntigo;
+                if(countTotal!=0){
+                    Livro livroProcurar = new Livro();
+                    livroProcurar.setId(livro.getId());
+                    Livro livroTemp = livroService.getLivrosBy(livroProcurar).getFirst();
+                    livroTemp.setNumeroCopiasDisponiveis(livroTemp.getNumeroCopiasDisponiveis() - countTotal);
+                    livroService.updateLivro(livroTemp);
+                }
+            }
+            Set<ObjectId> livrosAntigosIdSemDuplicada = new LinkedHashSet<>(livrosAntigosId);
+
+            for(ObjectId livroAntigoId : livrosAntigosIdSemDuplicada){
+                if(!livrosId.contains(livroAntigoId)){
+                    int count = Collections.frequency(livrosAntigosId, livroAntigoId );
+                    Livro livroProcurar = new Livro();
+                    livroProcurar.setId(livroAntigoId.toString());
+                    Livro livroTemp = livroService.getLivrosBy(livroProcurar).getFirst();
+                    livroTemp.setNumeroCopiasDisponiveis(livroTemp.getNumeroCopiasDisponiveis() + count);
+                    livroService.updateLivro(livroTemp);
+                }
+            }
+            Document doc = new Document("usuario", new ObjectId(reserva.getUsuario().getId()))
+                    .append("livros",livrosId)
+                    .append("dataReserva", reserva.getDataReserva())
+                    .append("status", reserva.getStatus());
+            
+            Document setDoc = new Document("$set", doc);
+            collection.updateOne(queryDoc,setDoc);
             return true;
         }
     }

@@ -12,6 +12,7 @@ com\umc\bibliotecav2web\servlet\FinalizarReservaServlet.class
 com\umc\bibliotecav2web\servlet\AcharUsuarioReservaServlet.class
 com\umc\bibliotecav2web\model\Livro.class
 com\umc\bibliotecav2web\service\UsuarioService.class
+com\umc\bibliotecav2web\servlet\AlterarReservaServlet.class
 com\umc\bibliotecav2web\servlet\ExcluirLivroReservaServlet.class
 com\umc\bibliotecav2web\service\ArryList.class
 com\umc\bibliotecav2web\servlet\VisualizarReservasServlet.class

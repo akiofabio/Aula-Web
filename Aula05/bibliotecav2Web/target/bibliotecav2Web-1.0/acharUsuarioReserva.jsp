@@ -23,8 +23,9 @@
                 <input type="text" class="form-control" id="numeroIdentificacao" name="numeroIdentificacao" >
             </div>
             <button type="submit" class="btn btn-primary">Confimar</button>
+            <a href="/index.jsp" class="btn btn-danger">Cancelar</a>
         </form>
-        
+
     </div>
     <!-- Link para o JavaScript do Bootstrap (opcional) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

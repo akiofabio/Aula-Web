@@ -24,57 +24,60 @@
     <div class="container">
         <h1 class="mt-4 mb-4">Reservas</h1>
         
-            <%
-            List<Reserva> reservas = new ArrayList();
-            if(request.getAttribute("reservas") != null){
-                reservas = (List<Reserva>) request.getAttribute("reservas");
-            }
-            for (Reserva reserva : reservas) {
-            %>
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row">
-                            <div class="col">
-                                Status: <%= reserva.getStatus() %>
-                            </div>
-                            <div class="col">
-                                Data: <%= reserva.getDataReserva() %>
-                            </div>
+        <%
+        List<Reserva> reservas = new ArrayList();
+        if(request.getAttribute("reservas") != null){
+            reservas = (List<Reserva>) request.getAttribute("reservas");
+        }
+        for (Reserva reserva : reservas) {
+        %>
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col">
+                            Status: <%= reserva.getStatus() %>
+                        </div>
+                        <div class="col">
+                            Data: <%= reserva.getDataReserva() %>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <table class="table table-striped">
-                            <thead>
+                </div>
+                <div class="card-body">
+                    <div class="row ml-2">
+                        Nome: <%= reserva.getUsuario().getNome() %>              
+                    </div>
+                    <div class="row ml-2">
+                            N de Idendificação: <%= reserva.getUsuario().getNumeroIdentificacao()%>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Autor</th>
+                                <th>Ano de Publicação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%
+                            for (Livro livro : reserva.getLivros()) { 
+                            %>
                                 <tr>
-                                    <th>Título</th>
-                                    <th>Autor</th>
-                                    <th>Ano de Publicação</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <%
-                                for (Livro livro : reserva.getLivros()) { 
-                                %>
-                                    <tr>
                                     <td><%= livro.getTitulo() %></td>
                                     <td><%= livro.getAutor() %></td>
                                     <td><%= livro.getAnoPublicacao() %></td>
-                                    <td>
-                                        <form action="alterarLivro" method="get" style="display:inline;">
-                                            <input type="hidden" name="id" value="<%= livro.getId()%>">
-                                            <button type="submit" class="btn btn-success">Alterar</button>
-                                        </form>
-
-                                        <form action="deletarLivro" method="post" style="display:inline;">
-                                            <input type="hidden" name="id" value="<%= livro.getId()%>">
-                                            <button type="submit" class="btn btn-danger">Excluir</button>
-                                        </form>
-                                    </td>
                                 </tr>
                             <% } %>
                         </tbody>
                     </table>
+                    <form action="alterarReserva" method="get" style="display:inline;">
+                        <input type="hidden" name="id" value="<%= reserva.getId()%>">
+                        <button type="submit" class="btn btn-success">Alterar</button>
+                    </form>
+
+                    <form action="deletarReserva" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="<%= reserva.getId()%>">
+                        <button type="submit" class="btn btn-danger">Excluir</button>
+                    </form>
                 </div>
             </div>
         <%}%>

@@ -41,6 +41,7 @@ public class AcharUsuarioReservaServlet extends HttpServlet {
             List<Livro> livros = livroService.getAllLivros();
             List<Livro> livrosReservados = new ArrayList<>();
             request.setAttribute("livros", livros);
+            request.getSession().setAttribute("idReserva", null);
             request.getSession().setAttribute("livrosReservados", livrosReservados);
             request.getSession().setAttribute("usuarioReserva", usuarioResul.getFirst());
             request.getRequestDispatcher("selecionarLivrosReserva.jsp").forward(request, response);

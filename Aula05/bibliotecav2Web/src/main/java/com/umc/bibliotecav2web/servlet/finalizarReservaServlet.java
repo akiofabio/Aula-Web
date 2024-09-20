@@ -27,6 +27,7 @@ import java.util.List;
 @WebServlet(name = "finalizarReservaServlet", urlPatterns = {"/finalizarReserva"})
 public class FinalizarReservaServlet extends HttpServlet {
     final ReservaService reservaService = new ReservaService();
+    final LivroService livroService = new LivroService();
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -38,7 +39,10 @@ public class FinalizarReservaServlet extends HttpServlet {
             response.sendRedirect("visualizarReservas");
         }
         else{
-            response.sendRedirect("selecionarLivrosReserva.jsp?error=true");
+            List<Livro> todosLivros = livroService.getAllLivros();
+            request.setAttribute("error", "true");
+            request.setAttribute("livros", todosLivros);
+            request.getRequestDispatcher("selecionarLivrosReserva.jsp").forward(request, response);
         }
     }
     
