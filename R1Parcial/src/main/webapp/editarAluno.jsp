@@ -69,7 +69,14 @@
                         <div class="invalid-feedback"> <%= request.getAttribute("anoDeIngressoErroMensagem")%>  </div>
                     <%}%>
                 </div>
-                <button type="submit" class="btn btn-primary">Atualizar</button>
+                <div class="row">
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary">Atualizar</button>
+                    </div>
+                    <div class="col">
+                        <a href="listarAlunos" class="btn btn-danger">Cancelar</a>
+                    </div>
+                </div>
             </form>
         </div>
         <!-- Link para o arquivo JavaScript do Bootstrap hospedado no CDN (opcional, se necessário) -->
