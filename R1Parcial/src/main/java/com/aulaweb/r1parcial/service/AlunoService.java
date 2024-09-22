@@ -11,7 +11,6 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import java.util.ArrayList;
-import java.util.List;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -52,7 +51,6 @@ public class AlunoService {
     public ArrayList<Aluno> listarAlunos(){
         //Inicia um ArrayList em branco
         ArrayList<Aluno> listaAlunos = new ArrayList<>();
-        
         //Tenta conectar ao DB
         try (MongoClient mongoClient = MongoClients.create(  codigoMongoDB)){
             //Obtem a conexão ao banco de dados gestaoAluno
@@ -61,11 +59,10 @@ public class AlunoService {
             MongoCollection<Document> collection = database.getCollection("alunos");
             //Consulta todos os alunos na coleção "alunos"
             FindIterable<Document> documents = collection.find();
-            
             //Instancia os objetos Alunos de forma iterativa para todos os alunos encontrados
             for (Document document : documents) {
                 //Pega o ObjectId(hexadecimal) com a chave "_id" e o Transforma para int e atribui ao id
-                int id = Integer.parseInt(document.getObjectId("_id").toString(), 16);
+                int id = document.getLong("id").intValue();
                 //Pega o String com a chave "nome" atribui a String nome
                 String nome = document.getString("nome");
                 //Pega o String com a chave "email" atribui a String email
@@ -96,13 +93,11 @@ public class AlunoService {
             //Obtem a coleção de alunos
             MongoCollection<Document> collection = database.getCollection("alunos");
             //Cria o documento com a query para achar o aluno pelo id
-            Document query = new Document("_id",id);
+            Document query = new Document("id",id);
             //consulta pelo aluno com o id especifico e pega o primeiro, pois como o _id é unico deveria ter apenas um aluno com aquele id
             Document document = collection.find(query).first();
             
             //Instancia o objeto Aluno 
-            //Pega o ObjectId(hexadecimal) com a chave "_id" e o Transforma para int e atribui ao id
-            id = Integer.parseInt(document.getObjectId("_id").toString(), 16);
             //Pega o String com a chave "nome" atribui a String nome
             String nome = document.getString("nome");
             //Pega o String com a chave "email" atribui a String email
@@ -134,7 +129,7 @@ public class AlunoService {
             }
             
             //Cria o documento com a query para achar o aluno que vai ser atualizado pelo id
-            Document query = new Document("_id",aluno.getId());
+            Document query = new Document("id",aluno.getId());
             //Cria um documento que paria a chave(nome da coluna no BD) com os atributos a serem atualizado
             Document doc = new Document("nome", aluno.getNome())
                         .append("email", aluno.getEmail())
@@ -158,12 +153,14 @@ public class AlunoService {
             //Obtem a coleção de alunos
             MongoCollection<Document> collection = database.getCollection("alunos");
             //Cria o documento com a query para achar o aluno pelo id
-            Document query = new Document("_id",id);
-            //consulta pelo aluno com o id especifico e pega o primeiro, pois como o _id é unico deveria ter apenas um aluno com aquele id
-            Document document = collection.find(query).first();
-            
+            //Converte o id(int) em HexString e dpois em ObjectId
+            Document document = new Document("id", id);
+            //Deleta do BD o aluno com o id especificado
+            collection.deleteOne(document);
         }catch (Exception e) {
             //Trata dos erros ocorridos
         }
     }
+    
+    
 }
