@@ -8,15 +8,29 @@ public class Emprestimo {
     private Date dataDevolucao;
     private Livro livro;
     private Usuario usuario;
-
+    private String statusDevolucao;
+    
     // Construtor
-    public Emprestimo(Livro livro, Usuario usuario) {
+    public Emprestimo(String id, Date dataInicio, Date dataDevolucao, Livro livro, Usuario usuario, String statusDevolucao) {
+        this.id = id;
+        this.dataInicio = dataInicio;
+        this.dataDevolucao = dataDevolucao;
         this.livro = livro;
         this.usuario = usuario;
-        this.dataInicio = new Date(); // Data atual
+        this.statusDevolucao = statusDevolucao;
     }
 
-    // Getters e Setters
+    public Emprestimo(Date dataInicio, Date dataDevolucao, Livro livro, Usuario usuario, String statusDevolucao) {
+        this.dataInicio = dataInicio;
+        this.dataDevolucao = dataDevolucao;
+        this.livro = livro;
+        this.usuario = usuario;
+        this.statusDevolucao = statusDevolucao;
+    }
+    
+    public Emprestimo() {
+    }
+
     public String getId() {
         return id;
     }
@@ -56,4 +70,13 @@ public class Emprestimo {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
+    public String getStatusDevolucao() {
+        return statusDevolucao;
+    }
+
+    public void setStatusDevolucao(String statusDevolucao) {
+        this.statusDevolucao = statusDevolucao;
+    }
+
 }

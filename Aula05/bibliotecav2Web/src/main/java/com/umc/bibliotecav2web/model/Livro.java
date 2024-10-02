@@ -26,6 +26,11 @@ public class Livro {
         this.numeroCopiasDisponiveis = numeroCopiasDisponiveis;
     }
 
+    public Livro(String id) {
+        this.id = id;
+    }
+    
+    
     // Getters e Setters
     public String getId() {
         return id;

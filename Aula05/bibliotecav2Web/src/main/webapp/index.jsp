@@ -10,11 +10,20 @@
 <body>
     <div class="container">
         <h1 class="mt-5">Biblioteca Mogiana</h1>
+        <% if ( request.getAttribute("mensagem") != null) { %>
+            <div class="alert alert-success m-5" role="alert">
+                <%= request.getAttribute("mensagem") %>
+            </div>
+        <% } %>
         <p class="lead">O que você gostaria de fazer?</p>
         <div class="list-group">
-            <a href="/visualizarLivros" class="list-group-item list-group-item-action">Listar Livros Cadastrados</a>
-            <a href="/visualizarReservas" class="list-group-item list-group-item-action">Listar Reservas</a>
-            <a href="/realizarDevolucao.jsp" class="list-group-item list-group-item-action">Realisar Devolução</a>
+            <a href="/visualizarLivros" class="list-group-item list-group-item-action">Livros Cadastrados</a>
+            <a href="/visualizarUsuario" class="list-group-item list-group-item-action">Usuários Cadastrados</a>
+            <a href="/historico/acharUsuarioHistorico.jsp" class="list-group-item list-group-item-action">Histórico</a>
+            <a href="/visualizarPendecias" class="list-group-item list-group-item-action">Pendencias</a>
+            <a href="/visualizarReservas" class="list-group-item list-group-item-action">Reservas</a>
+            <a href="/emprestimo/acharUsuarioEmprestimo.jsp" class="list-group-item list-group-item-action">Realisar Emprestimo</a>
+            <a href="/devolucao/acharUsuarioDevolucao.jsp" class="list-group-item list-group-item-action">Realisar Devolução</a>
         </div>
     </div>
     <!-- Link para o arquivo JavaScript do Bootstrap hospedado no CDN (opcional, se necessário) -->

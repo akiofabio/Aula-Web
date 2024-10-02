@@ -1,7 +1,7 @@
 
 package com.umc.bibliotecav2web.model;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class Usuario {
     private String id;
@@ -14,7 +14,6 @@ public class Usuario {
         this.numeroIdentificacao = numeroIdentificacao;
     }
 
-    // Construtor
     public Usuario(String nome, String numeroIdentificacao) {
         this.nome = nome;
         this.numeroIdentificacao = numeroIdentificacao;
@@ -23,7 +22,6 @@ public class Usuario {
     public Usuario() {
     }
 
-    // Getters e Setters
     public String getId() {
         return id;
     }
@@ -47,4 +45,5 @@ public class Usuario {
     public void setNumeroIdentificacao(String numeroIdentificacao) {
         this.numeroIdentificacao = numeroIdentificacao;
     }
+
 }

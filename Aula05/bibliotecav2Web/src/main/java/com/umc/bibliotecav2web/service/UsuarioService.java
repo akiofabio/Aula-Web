@@ -20,30 +20,22 @@ import org.bson.types.ObjectId;
  * @author Akio
  */
 public class UsuarioService {
+    
     String profMongo = "mongodb+srv://alunosumc:alunosumc_2024@biblioteca.jjf94mj.mongodb.net/";
     String myMongo = "mongodb+srv://web:123@cluster0.ahyoi.mongodb.net/";
-    public List<Usuario> getBy(Usuario usuario) {List<Usuario> listaUsuario = new ArrayList<>();
+    
+    public List<Usuario> getBy(Document query) {
+        List<Usuario> listaUsuario = new ArrayList<>();
         try (MongoClient mongoClient = MongoClients.create(  myMongo)){ 
             MongoDatabase database = mongoClient.getDatabase("biblioteca");
             MongoCollection<Document> collection = database.getCollection("usuarios");
 
-            Document doc = new Document();
-            if(usuario.getId()!= null){
-                doc.append("_id", new ObjectId(usuario.getId()));
-            }
-            if(usuario.getNome()!= null){
-                doc.append("nome", usuario.getNome());
-            }
-            if(usuario.getNumeroIdentificacao()!= null){
-                doc.append("numeroIdentificacao", usuario.getNumeroIdentificacao());
-            }
-
             FindIterable<Document> documents;
-            if(doc.isEmpty()){
+            if(query.isEmpty()){
                 documents = collection.find();
             }
             else{
-                documents = collection.find(doc);
+                documents = collection.find(query);
             }
             
             for (Document document : documents) {
