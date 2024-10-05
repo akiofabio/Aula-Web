@@ -31,6 +31,7 @@ public class EmprestimoService {
     
     final LivroService livroService = new LivroService();
     final UsuarioService usuarioService = new UsuarioService();
+    final MultaService multaService = new MultaService();
     
     public List<Emprestimo> getBy(Document query) {
         List<Emprestimo> listaEmprestimos = new ArrayList<>();
@@ -52,6 +53,7 @@ public class EmprestimoService {
                 ObjectId livroId = document.getObjectId("livro");
                 ObjectId usuarioId = document.getObjectId("usuario");
                 String statusDevolucao = document.getString("statusDevolucao");
+                ObjectId multaId = document.getObjectId("multa");
                 
                 Document livroQuery = new Document("_id",livroId);
                 Livro livro = livroService.getBy(livroQuery).getFirst();
@@ -59,7 +61,14 @@ public class EmprestimoService {
                 Document usuarioQuery = new Document("_id", usuarioId);
                 Usuario usuario = usuarioService.getBy(usuarioQuery).getFirst();
                 
-                Emprestimo emprestimoAchado = new Emprestimo(id.toString(),dataInicio, dataDevolucao, livro, usuario, statusDevolucao);
+                Document multaQuery = new Document("_id", multaId);
+                List<Multa> multas = multaService.getBy(multaQuery);
+                Multa multa = null;
+                if(!multas.isEmpty()){
+                     multa = multas.getFirst();
+                }
+                
+                Emprestimo emprestimoAchado = new Emprestimo(id.toString(),dataInicio, dataDevolucao, livro, usuario, statusDevolucao,multa);
                 listaEmprestimos.add(emprestimoAchado);
             }
         } catch (Exception e) {
@@ -103,6 +112,9 @@ public class EmprestimoService {
                     .append("livro", new ObjectId(emprestimo.getLivro().getId()))
                     .append("usuario", new ObjectId(emprestimo.getUsuario().getId()))
                     .append("statusDevolucao", emprestimo.getStatusDevolucao());
+            if(emprestimo.getMulta() != null){
+                doc.append("multa", new ObjectId(emprestimo.getMulta().getId()));
+            }
             Document setDoc = new Document("$set", doc);
             collection.updateOne(queryDoc,setDoc);
         }

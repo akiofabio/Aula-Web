@@ -9,25 +9,27 @@ public class Emprestimo {
     private Livro livro;
     private Usuario usuario;
     private String statusDevolucao;
-    
-    // Construtor
-    public Emprestimo(String id, Date dataInicio, Date dataDevolucao, Livro livro, Usuario usuario, String statusDevolucao) {
+    private Multa multa;
+
+    public Emprestimo(String id, Date dataInicio, Date dataDevolucao, Livro livro, Usuario usuario, String statusDevolucao, Multa multa) {
         this.id = id;
         this.dataInicio = dataInicio;
         this.dataDevolucao = dataDevolucao;
         this.livro = livro;
         this.usuario = usuario;
         this.statusDevolucao = statusDevolucao;
+        this.multa = multa;
     }
 
-    public Emprestimo(Date dataInicio, Date dataDevolucao, Livro livro, Usuario usuario, String statusDevolucao) {
+    public Emprestimo(Date dataInicio, Date dataDevolucao, Livro livro, Usuario usuario, String statusDevolucao, Multa multa) {
         this.dataInicio = dataInicio;
         this.dataDevolucao = dataDevolucao;
         this.livro = livro;
         this.usuario = usuario;
         this.statusDevolucao = statusDevolucao;
+        this.multa = multa;
     }
-    
+
     public Emprestimo() {
     }
 
@@ -79,4 +81,11 @@ public class Emprestimo {
         this.statusDevolucao = statusDevolucao;
     }
 
+    public Multa getMulta() {
+        return multa;
+    }
+
+    public void setMulta(Multa multa) {
+        this.multa = multa;
+    }
 }

@@ -38,17 +38,17 @@ public class VisualizarHistoricoServlet extends HttpServlet {
         UsuarioService usuarioService = new UsuarioService();       
         List<Usuario> usuarios = usuarioService.getBy(query);
         if(usuarios.isEmpty()){
-            response.sendRedirect("acharUsuarioDevolucao.jsp?error=true");
+            response.sendRedirect("historico/acharUsuarioHistorico.jsp?error=true");
         }
         else{
             Usuario usuario = usuarios.getFirst();
             Document userQuery = new Document("usuario",new ObjectId(usuario.getId()));
             List<Emprestimo> emprestimos = emprestimoService.getBy(userQuery);
-            List<Reserva> reserva = reservaService.getBy(userQuery);
+            List<Reserva> reservas = reservaService.getBy(userQuery);
             
             request.setAttribute("usuario", usuario);
             request.setAttribute("emprestimos", emprestimos);
-            request.setAttribute("reserva", reserva);
+            request.setAttribute("reservas", reservas);
             
             request.getRequestDispatcher("historico/historico.jsp").forward(request, response);
         }

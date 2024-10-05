@@ -1,9 +1,9 @@
 com\umc\bibliotecav2web\servlet\VisualizarHistoricoServlet.class
 com\umc\bibliotecav2web\servlet\reserva\AlterarReservaServlet.class
-com\umc\bibliotecav2web\servlet\PagarMultaServlet.class
 com\umc\bibliotecav2web\servlet\livro\DeletarLivroServlet.class
 com\umc\bibliotecav2web\model\Pagamento.class
 com\umc\bibliotecav2web\servlet\LoginServlet.class
+com\umc\bibliotecav2web\servlet\multa\GerarReciboServlet.class
 com\umc\bibliotecav2web\model\Multa.class
 com\umc\bibliotecav2web\servlet\livro\AlterarLivroServlet.class
 com\umc\bibliotecav2web\servlet\livro\VisualizarLivrosServlet.class
@@ -12,14 +12,18 @@ com\umc\bibliotecav2web\servlet\reserva\AcharUsuarioReservaServlet.class
 com\umc\bibliotecav2web\service\MultaService.class
 com\umc\bibliotecav2web\servlet\reserva\CancelarReservaServlet.class
 com\umc\bibliotecav2web\service\UsuarioService.class
+com\umc\bibliotecav2web\servlet\multa\PagarMultaServlet.class
 com\umc\bibliotecav2web\servlet\reserva\ConcluirReservaServlet.class
 com\umc\bibliotecav2web\servlet\reserva\ReservarServlet.class
+com\umc\bibliotecav2web\servlet\multa\AdicionarMultaServlet.class
 com\umc\bibliotecav2web\servlet\RealizardevolucaoServlet.class
+com\umc\bibliotecav2web\util\CalculoMulta.class
 com\umc\bibliotecav2web\servlet\reserva\DeletarReservaServlet.class
 com\umc\bibliotecav2web\service\AuthService.class
 com\umc\bibliotecav2web\servlet\reserva\VisualizarReservasServlet.class
 com\umc\bibliotecav2web\servlet\livro\CadastrarLivroServlet.class
 com\umc\bibliotecav2web\model\Emprestimo.class
+com\umc\bibliotecav2web\servlet\multa\RetirarMultaServlet.class
 com\umc\bibliotecav2web\servlet\reserva\ExcluirLivroReservaServlet.class
 com\umc\bibliotecav2web\service\LivroService.class
 com\umc\bibliotecav2web\service\ReservaService.class
@@ -28,4 +32,5 @@ com\umc\bibliotecav2web\servlet\reserva\FinalizarReservaServlet.class
 com\umc\bibliotecav2web\model\Livro.class
 com\umc\bibliotecav2web\model\Reserva.class
 com\umc\bibliotecav2web\service\PagamentoService.class
+com\umc\bibliotecav2web\util\Mask.class
 com\umc\bibliotecav2web\model\Usuario.class

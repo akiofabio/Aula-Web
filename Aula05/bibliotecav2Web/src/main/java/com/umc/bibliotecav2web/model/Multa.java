@@ -15,23 +15,23 @@ public class Multa {
     private String status;
     private double valor;
     private Date data;
-    private Emprestimo emprestimo;
+    private Date dataPagamento;
 
-    public Multa(String id, String status, double valor, Date data, Emprestimo emprestimo) {
+    public Multa(String id, String status, double valor, Date data, Date dataPagamento) {
         this.id = id;
         this.status = status;
         this.valor = valor;
         this.data = data;
-        this.emprestimo = emprestimo;
+        this.dataPagamento = dataPagamento;
     }
 
-    public Multa(String status, double valor, Date data, Emprestimo emprestimo) {
+    public Multa(String status, double valor, Date data, Date dataPagamento) {
         this.status = status;
         this.valor = valor;
         this.data = data;
-        this.emprestimo = emprestimo;
+        this.dataPagamento = dataPagamento;
     }
-    
+
     public Multa() {
     }
 
@@ -67,12 +67,11 @@ public class Multa {
         this.data = data;
     }
 
-    public Emprestimo getEmprestimo() {
-        return emprestimo;
+    public Date getDataPagamento() {
+        return dataPagamento;
     }
 
-    public void setEmprestimo(Emprestimo emprestimo) {
-        this.emprestimo = emprestimo;
+    public void setDataPagamento(Date dataPagamento) {
+        this.dataPagamento = dataPagamento;
     }
-    
 }

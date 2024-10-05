@@ -12,6 +12,8 @@ import com.umc.bibliotecav2web.service.EmprestimoService;
 import com.umc.bibliotecav2web.service.LivroService;
 import com.umc.bibliotecav2web.service.MultaService;
 import com.umc.bibliotecav2web.service.UsuarioService;
+import com.umc.bibliotecav2web.util.CalculoMulta;
+import com.umc.bibliotecav2web.util.Mask;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -20,6 +22,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -43,15 +46,30 @@ public class RealizardevolucaoServlet extends HttpServlet {
         UsuarioService usuarioService = new UsuarioService();       
         List<Usuario> usuarios = usuarioService.getBy(query);
         if(usuarios.isEmpty()){
-            response.sendRedirect("acharUsuarioDevolucao.jsp?error=true");
+            response.sendRedirect("devolucao/acharUsuarioDevolucao.jsp?error=true");
         }
         else{
             Usuario usuario = usuarios.getFirst();
+            
             Document emprestimoQuery = new Document("usuario",new ObjectId(usuario.getId()))
                     .append("statusDevolucao", "Aberto");
             List<Emprestimo> emprestimos = emprestimoService.getBy(emprestimoQuery);
+            
+            Document emprestimoAtrasadoQuery = new Document("usuario",new ObjectId(usuario.getId()))
+                    .append("statusDevolucao", "Devolvido com Atraso");
+            List<Emprestimo> emprestimosAtrasados = emprestimoService.getBy(emprestimoAtrasadoQuery);
+            
+            List<Multa> multas = new ArrayList<>();
+            for(Emprestimo emprestimo : emprestimosAtrasados){
+                Multa multa = emprestimo.getMulta();
+                if(multa.getStatus().equals("Aberta") ){
+                    multas.add(multa);
+                }
+            }
+            
             request.setAttribute("usuario", usuario);
             request.setAttribute("emprestimos", emprestimos);
+            request.setAttribute("multas", multas);
             request.getRequestDispatcher("devolucao/realizarDevolucao.jsp").forward(request, response);
         }
     }
@@ -68,36 +86,45 @@ public class RealizardevolucaoServlet extends HttpServlet {
         livro.setNumeroCopiasDisponiveis(livro.getNumeroCopiasDisponiveis()+1);
         livroService.updateLivro(livro);
         
-        long tempo = new Date().getTime() - emprestimo.getDataDevolucao().getTime();
-        long dias = TimeUnit.DAYS.convert(tempo, TimeUnit.MILLISECONDS);
-        
-        if(dias>0){
-            double valor = 5 + 1.5*dias;
-            Multa multa = new Multa("Gerada", valor, new Date(), emprestimo);
+        Date agora = new Date();
+        double valor = CalculoMulta.calcularMulta(agora,emprestimo.getDataDevolucao());
+
+        if(valor>0){
+            Multa multa = new Multa("Aberta", valor, new Date(),null);
             MultaService multaService = new MultaService();
-            multaService.newMulta(multa);
+            multa = multaService.newMulta(multa);
             
-            Document multaQuery = new Document("emprestimo",new ObjectId(emprestimo.getId()));
-            System.out.println(multaService.getBy(multaQuery));
-            multa = multaService.getBy(multaQuery).getFirst();
-            request.setAttribute("multa", multa);
-            emprestimo.setStatusDevolucao("Delvovido com Atraso");
-            emprestimoService.update(emprestimo);
-            request.getRequestDispatcher("multa/pagarConta.jsp").forward(request, response);
+            emprestimo.setStatusDevolucao("Devolvido com Atraso");
+            emprestimo.setMulta(multa);
+            request.setAttribute("multaMensagem", "Devolução com Atrazo!! Multa de R$" 
+                    + Mask.DinheiroMask(valor) 
+                    + " gerada por " + CalculoMulta.calcularDiasAtrasos(agora,emprestimo.getDataDevolucao()) 
+                    + " dia(s) de atraso");
         }
         else{
             emprestimo.setStatusDevolucao("Delvovido");
-            emprestimoService.update(emprestimo);
-            
-            emprestimoQuery = new Document("usuario",new ObjectId(emprestimo.getUsuario().getId()))
-                    .append("statusDevolucao", "Aberto");
-            List<Emprestimo> emprestimos = emprestimoService.getBy(emprestimoQuery);
             request.setAttribute("mensagem", "Devolução concluida com sucesso");
-            request.setAttribute("usuario", emprestimo.getUsuario());
-            request.setAttribute("emprestimos", emprestimos);
-            request.getRequestDispatcher("devolucao/realizarDevolucao.jsp").forward(request, response);
         }
+        emprestimoService.update(emprestimo);
+        emprestimoQuery = new Document("usuario",new ObjectId(emprestimo.getUsuario().getId()))
+                .append("statusDevolucao", "Aberto");
+        List<Emprestimo> emprestimos = emprestimoService.getBy(emprestimoQuery);
+        
+        Document emprestimoAtrasadoQuery = new Document("usuario",new ObjectId(emprestimo.getUsuario().getId()))
+                .append("statusDevolucao", "Devolvido com Atraso");
+        List<Emprestimo> emprestimosAtrasados = emprestimoService.getBy(emprestimoAtrasadoQuery);
+        
+        List<Multa> multas = new ArrayList<>();
+        for(Emprestimo emprestimoAtr : emprestimosAtrasados){
+            Multa multa = emprestimoAtr.getMulta();
+            if(multa.getStatus().equals("Aberta") ){
+                multas.add(multa);
+            }
+        }
+        
+        request.setAttribute("usuario", emprestimo.getUsuario());
+        request.setAttribute("emprestimos", emprestimos);
+        request.setAttribute("multas", multas);
+        request.getRequestDispatcher("devolucao/realizarDevolucao.jsp").forward(request, response);
     }
-
-    
 }

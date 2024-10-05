@@ -30,8 +30,6 @@ public class MultaService {
     String dataBaseString = "biblioteca";
     String collectionString = "multas";
     
-    final EmprestimoService emprestimoService = new EmprestimoService();
-    
     public List<Multa> getBy(Document query) {
         List<Multa> listaMultas = new ArrayList<>();
         try (MongoClient mongoClient = MongoClients.create(  myMongo)){ 
@@ -51,12 +49,9 @@ public class MultaService {
                 String status = document.getString("status");
                 Double valor = document.getDouble("valor");
                 Date data = document.getDate("data");
-                ObjectId emprestimoId = document.getObjectId("emprestimo");
+                Date dataPagamento = document.getDate("dataPagamento");
                 
-                Document emprestimoQuery = new Document("_id",emprestimoId);
-                Emprestimo Emprestimo = emprestimoService.getBy(emprestimoQuery).getFirst();
-                
-                Multa multa = new Multa(id.toString(),status, valor, data, Emprestimo);
+                Multa multa = new Multa(id.toString(),status, valor, data,  dataPagamento);
                 listaMultas.add(multa);
             }
         } catch (Exception e) {
@@ -64,21 +59,23 @@ public class MultaService {
         return listaMultas;
     }
 
-    public void newMulta(Multa multa) {
+    public Multa newMulta(Multa multa) {
+        
         try (MongoClient mongoClient = MongoClients.create(myMongo)) {
             MongoDatabase database = mongoClient.getDatabase(dataBaseString);
             MongoCollection<Document> collection = database.getCollection(collectionString);
             if (collection == null) {
                 System.out.println("A coleção não foi inicializada corretamente.");
-                return;
+                return null;
             }
 
             Document doc = new Document("status", multa.getStatus())
                     .append("valor", multa.getValor())
-                    .append("data", multa.getData())
-                    .append("emprestimo", new ObjectId(multa.getEmprestimo().getId()));
+                    .append("data", multa.getData());
             collection.insertOne(doc);
+            multa = getBy( doc).getFirst();
         }
+        return multa;
     }
 
     public void update(Multa multa) {
@@ -95,8 +92,10 @@ public class MultaService {
             Document queryDoc = new Document("_id",new ObjectId(multa.getId()));
             Document doc = new Document("status", multa.getStatus())
                     .append("valor", multa.getValor())
-                    .append("data", multa.getData())
-                    .append("emprestimo", new ObjectId(multa.getEmprestimo().getId()));
+                    .append("data", multa.getData());
+            if(multa.getDataPagamento() != null){
+                doc.append("dataPagamento", multa.getDataPagamento());
+            } 
             Document setDoc = new Document("$set", doc);
             collection.updateOne(queryDoc,setDoc);
         }

@@ -44,14 +44,11 @@ ReservaService reservaService = new ReservaService();
             
             Usuario usuario = reserva.getUsuario();
             String statusDevolucao = "Aberto";
-            Emprestimo emprestimo = new Emprestimo(dataInicio, dataDevolucao, livro, usuario, statusDevolucao);
+            Emprestimo emprestimo = new Emprestimo(dataInicio, dataDevolucao, livro, usuario, statusDevolucao, null);
             emprestimoService.newEmprestimo(emprestimo);
         }
         reserva.setStatus("Concluida");
         reservaService.updateReserva(reserva);
-        
-        
-        
         response.sendRedirect("visualizarReservas");
     }
 }

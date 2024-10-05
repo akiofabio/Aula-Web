@@ -16,7 +16,10 @@ C:\Users\Akio\Desktop\Aula-Web\Aula05\bibliotecav2Web\src\main\java\com\umc\bibl
 C:\Users\Akio\Desktop\Aula-Web\Aula05\bibliotecav2Web\src\main\java\com\umc\bibliotecav2web\servlet\livro\DeletarLivroServlet.java
 C:\Users\Akio\Desktop\Aula-Web\Aula05\bibliotecav2Web\src\main\java\com\umc\bibliotecav2web\servlet\livro\VisualizarLivrosServlet.java
 C:\Users\Akio\Desktop\Aula-Web\Aula05\bibliotecav2Web\src\main\java\com\umc\bibliotecav2web\servlet\LoginServlet.java
-C:\Users\Akio\Desktop\Aula-Web\Aula05\bibliotecav2Web\src\main\java\com\umc\bibliotecav2web\servlet\PagarMultaServlet.java
+C:\Users\Akio\Desktop\Aula-Web\Aula05\bibliotecav2Web\src\main\java\com\umc\bibliotecav2web\servlet\multa\AdicionarMultaServlet.java
+C:\Users\Akio\Desktop\Aula-Web\Aula05\bibliotecav2Web\src\main\java\com\umc\bibliotecav2web\servlet\multa\GerarReciboServlet.java
+C:\Users\Akio\Desktop\Aula-Web\Aula05\bibliotecav2Web\src\main\java\com\umc\bibliotecav2web\servlet\multa\PagarMultaServlet.java
+C:\Users\Akio\Desktop\Aula-Web\Aula05\bibliotecav2Web\src\main\java\com\umc\bibliotecav2web\servlet\multa\RetirarMultaServlet.java
 C:\Users\Akio\Desktop\Aula-Web\Aula05\bibliotecav2Web\src\main\java\com\umc\bibliotecav2web\servlet\RealizardevolucaoServlet.java
 C:\Users\Akio\Desktop\Aula-Web\Aula05\bibliotecav2Web\src\main\java\com\umc\bibliotecav2web\servlet\reserva\AcharUsuarioReservaServlet.java
 C:\Users\Akio\Desktop\Aula-Web\Aula05\bibliotecav2Web\src\main\java\com\umc\bibliotecav2web\servlet\reserva\AlterarReservaServlet.java
@@ -29,3 +32,5 @@ C:\Users\Akio\Desktop\Aula-Web\Aula05\bibliotecav2Web\src\main\java\com\umc\bibl
 C:\Users\Akio\Desktop\Aula-Web\Aula05\bibliotecav2Web\src\main\java\com\umc\bibliotecav2web\servlet\reserva\ReservarServlet.java
 C:\Users\Akio\Desktop\Aula-Web\Aula05\bibliotecav2Web\src\main\java\com\umc\bibliotecav2web\servlet\reserva\VisualizarReservasServlet.java
 C:\Users\Akio\Desktop\Aula-Web\Aula05\bibliotecav2Web\src\main\java\com\umc\bibliotecav2web\servlet\VisualizarHistoricoServlet.java
+C:\Users\Akio\Desktop\Aula-Web\Aula05\bibliotecav2Web\src\main\java\com\umc\bibliotecav2web\util\CalculoMulta.java
+C:\Users\Akio\Desktop\Aula-Web\Aula05\bibliotecav2Web\src\main\java\com\umc\bibliotecav2web\util\Mask.java
