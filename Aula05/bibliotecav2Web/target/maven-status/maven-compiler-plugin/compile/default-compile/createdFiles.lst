@@ -29,6 +29,7 @@ com\umc\bibliotecav2web\service\LivroService.class
 com\umc\bibliotecav2web\service\ReservaService.class
 com\umc\bibliotecav2web\servlet\reserva\CriarReservaServlet.class
 com\umc\bibliotecav2web\servlet\reserva\FinalizarReservaServlet.class
+com\umc\bibliotecav2web\servlet\livro\LivroServlet.class
 com\umc\bibliotecav2web\model\Livro.class
 com\umc\bibliotecav2web\model\Reserva.class
 com\umc\bibliotecav2web\service\PagamentoService.class

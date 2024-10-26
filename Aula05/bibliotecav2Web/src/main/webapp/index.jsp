@@ -18,6 +18,9 @@
         <% } %>
         <p class="lead">O que você gostaria de fazer?</p>
         <div class="list-group">
+            <form method="get" action="/livro">
+                <button type="submit" class="list-group-item list-group-item-action">Livros Cadastrados (Restfull)</button>
+            </form>
             <a href="/visualizarLivros" class="list-group-item list-group-item-action">Livros Cadastrados</a>
             <a onclick="naoImplementado()" class="list-group-item list-group-item-action">Usuários Cadastrados</a>
             <a href="/historico/acharUsuarioHistorico.jsp" class="list-group-item list-group-item-action">Histórico</a>

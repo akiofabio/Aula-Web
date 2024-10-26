@@ -10,7 +10,7 @@
 <body>
     <div class="container">
         <h1 class="mt-4 mb-4">Cadastro de Livros</h1>
-        <form action="/cadastrarLivro" method="post">
+        <form action="/livro" method="post">
             <div class="form-group">
                 <label for="titulo">Título:</label>
                 <input type="text" class="form-control" id="titulo" name="titulo">

@@ -1,3 +1,6 @@
+<%@page import="com.fasterxml.jackson.databind.ObjectMapper"%>
+<%@page import="com.fasterxml.jackson.core.type.TypeReference"%>
+<%@page import="java.util.List"%>
 <%@page import="com.umc.bibliotecav2web.model.Livro"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
@@ -11,8 +14,15 @@
 <body>
     <div class="container">
         <h1 class="mt-4 mb-4">Alteração de Livro</h1>
+        <!-- Nota: como o HTML 5 não aceita o method "post" , não foi possivel implementar:
+            <form action="livro" method="post">
+        -->
         <form action="alterarLivro" method="post">
-            <% Livro livro = (Livro) request.getAttribute("livro"); %>
+            <% 
+                ObjectMapper mapper = new ObjectMapper();
+                List<Livro> livros = mapper.readValue((String) request.getAttribute("livros"), new TypeReference<List<Livro>>(){});
+                
+                Livro livro = livros.getFirst(); %>
             <input type="hidden" name="id" value="<%= livro.getId()%>">
             <div class="form-group">
                 <label for="titulo">Título:</label>
